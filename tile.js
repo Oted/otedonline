@@ -52,13 +52,12 @@ function Tile(
             this.callMessage = null;
         }
 
-        //do not redraw when color did not change
-        if (this.prevColor?.value !== this.color.value) {
+        if (this.prevColor != this.color) {
+            this.dispatchDirtyTile();
             this.drawBorder();
             this.fill();
         }
     }
-
 
     this.handleChosenAtDraw = (time, chosen) => {
         const eventNorth = new CustomEvent("TileCall", {
@@ -111,6 +110,15 @@ function Tile(
         return list;
     }
 
+    this.dispatchDirtyTile = () => {
+        this.canvas.dispatchEvent(new CustomEvent("DirtyTile", {
+            detail: {
+                x: this.gridX,
+                y: this.gridY
+            }
+        }));
+    }
+
     this.dispatch = (events, chosen) => {
         if (chosen) {
             events.forEach(e => {
@@ -130,12 +138,14 @@ function Tile(
         } else {
             events.forEach(e => {
                 Math.random() < this.color.strength ? this.canvas.dispatchEvent(e) : null;
+                //this.canvas.dispatchEvent(e);
             })
         }
     }
 
     this.answerCall = (e) => {
         this.callMessage = e.detail;
+        this.dispatchDirtyTile();
     }
 
     this.fill = () => {
