@@ -1,7 +1,5 @@
 import {Grid} from "./grid.js";
 
-console.log("deployed");
-
 let grid;
 const tickRateMs = 10;
 

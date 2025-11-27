@@ -2,7 +2,6 @@ import {Tile, TILE_SIZE} from "./tile.js";
 import {Color, randomColor} from "./color.js";
 import {getActiveBlocks} from "./blocks.js";
 
-const ACTIVE_COLOR_COUNT = 5;
 const FILL_COLOR = new Color("rgba(0,0,0,0.85)");
 const INITIAL_COLOR = new Color("rgba(0,0,0,2)");
 
@@ -40,12 +39,14 @@ function Grid(
 
     this.resize = () => {
         this.dirtyTileQueue = this.tiles.flat();
+        this.dirtyTileQueue.forEach((tile) => {
+            tile.isDirty = true;
+        });
         this.time = 0;
         this.canvas.width = window.innerWidth;
         this.canvas.height = window.innerHeight;
     }
 
-    this.blockTileCount = 0;
     this.blockColor = new Color("white");
 
     this.draw = () => {
@@ -56,13 +57,10 @@ function Grid(
             const t = dirtyTilesToProcess.shift();
             if (t.isInBlock || this.isInBlock(t.gridX, t.gridY)) {
                 t.isInBlock = true;
-                if (this.time === 0) this.blockTileCount++;
             }
 
             if (this.time === 0) {
-                t.setColor(INITIAL_COLOR);
-            } else if (!t.isInBlock) {
-                t.setColor(FILL_COLOR);
+                t.setColor(t.isInBlock ? INITIAL_COLOR : FILL_COLOR, this.time);
             }
 
             t.draw(this.time);
@@ -79,21 +77,19 @@ function Grid(
         const colorCount = Object.keys(colorCountObj).length;
         this.time++;
 
-        if (colorCount < ACTIVE_COLOR_COUNT) {
-            this.selectCandidate(colorCount);
-        }
+        this.selectCandidate(colorCount);
     }
 
-    this.selectCandidate = (colorCount) => {
+    this.selectCandidate = () => {
         const color = randomColor()
-        const randomTile = colorCount % 2 === 0 ? this.randomTile() : this.randomTileInBlock();
+        const randomTile = this.randomTileInBlock();
         const callRandomCenter = new CustomEvent("TileCall", {
             detail: {
                 x: randomTile.gridX,
                 y: randomTile.gridY,
                 color: color,
                 time: this.time,
-                newSpawn : true
+                newSpawn: true
             }
         });
 
