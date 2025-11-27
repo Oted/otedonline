@@ -1,15 +1,21 @@
-import {Tile, tileSize} from "./tile.js";
+import {Tile, TILE_SIZE} from "./tile.js";
 import {Color, randomColor} from "./color.js";
-import {otedBlocks, onlineBlocks} from "./blocks.js";
-;
-const activeColorCount = 5;
-const fillColor = new Color("rgba(0,0,0,0.85)");
-const initialColor = new Color("rgba(0,0,0,2)");
+import {getActiveBlocks} from "./blocks.js";
+
+const FILL_COLOR = new Color("rgba(0,0,0,0.85)");
+const INITIAL_COLOR = new Color("rgba(0,0,0,2)");
 
 function Grid(
     canvas,
 ) {
     this.canvas = canvas;
+    this.dirtyTileSet = {};
+
+    this.canvas.addEventListener("DirtyTile", (e) => {
+        const t = this.tiles[e.detail.y][e.detail.x];
+        this.dirtyTileSet[t.id] = t;
+    }, false)
+
     this.canvas.addEventListener("TileCall", (e) => {
         try {
             this.tiles[e.detail.y][e.detail.x].answerCall(e);
@@ -17,13 +23,13 @@ function Grid(
         }
     }, false)
 
-    this.tiles = Array(Math.ceil(window.innerHeight / tileSize)).fill().map((_, y) => {
-        return Array(Math.ceil(window.innerWidth / tileSize)).fill().map((_, x) => {
+    this.tiles = Array(Math.ceil(window.innerHeight / TILE_SIZE)).fill().map((_, y) => {
+        return Array(Math.ceil(window.innerWidth / TILE_SIZE)).fill().map((_, x) => {
             return new Tile(
                 x,
                 y,
-                x * tileSize,
-                y * tileSize,
+                x * TILE_SIZE,
+                y * TILE_SIZE,
                 this.canvas,
             );
         })
@@ -33,43 +39,30 @@ function Grid(
     this.tilesY = this.tiles.length;
 
     this.resize = () => {
-        this.dirtyTiles = this.tiles.flat();
+        this.dirtyTileSet = Object.fromEntries(this.tiles.flat().map(t => [t.id, t]));
         this.time = 0;
         this.canvas.width = window.innerWidth;
         this.canvas.height = window.innerHeight;
     }
 
-    this.otedBlockTileCount = 0;
-    this.onlineBlockColor = new Color("white");
-    this.shouldRefreshOnlineColor = false;
-    this.dirtyTiles = [];
+    this.blockColor = new Color("white");
 
-    this.newDraw = () => {
+    this.draw = () => {
         let colorCountObj = {};
-        const refreshOnlineColor = this.shouldRefreshOnlineColor;
-        this.shouldRefreshOnlineColor = false;
 
-        this.dirtyTiles.forEach(t => {
-            if (t.isInOtedBlock || this.isInOtedBlock(x, y)) {
-                t.isInOtedBlock = true;
-                if (this.time === 0) this.otedBlockTileCount++;
-            }
-
-            if (t.isInOnlineBlock || this.isInOnlineBlocks(x, y)) {
-                t.isInOnlineBlock = true;
+        for (const tileId in this.dirtyTileSet) {
+            const t = this.dirtyTileSet[tileId];
+            if (t.isInBlock || this.isInBlock(t.gridX, t.gridY)) {
+                t.isInBlock = true;
             }
 
             if (this.time === 0) {
-                t.setColor(t.isInOnlineBlock ? this.onlineBlockColor : initialColor);
-            } else if (refreshOnlineColor && t.isInOnlineBlock) {
-                t.setColor(this.onlineBlockColor);
-            } else if (!t.isInOtedBlock && !t.isInOnlineBlock) {
-                t.setColor(fillColor);
+                t.setColor(t.isInBlock ? INITIAL_COLOR : FILL_COLOR, this.time);
             }
 
             t.draw(this.time);
 
-            if (!t.isInOnlineBlock && t.color.value !== initialColor.value && t.color.value !== fillColor.value) {
+            if (t.color.value !== INITIAL_COLOR.value && t.color.value !== FILL_COLOR.value) {
                 if (colorCountObj[t.color.value]) {
                     colorCountObj[t.color.value] = colorCountObj[t.color.value] + 1;
                 } else {
@@ -77,115 +70,29 @@ function Grid(
                 }
             }
 
-            const colorCount = Object.keys(colorCountObj).length;
-            this.time++;
-
-            if (colorCount < activeColorCount) {
-                this.selectCandidate(colorCount);
-            }
-        })
-    }
-
-    this.draw = () => {
-        let colorCountObj = {};
-        const refreshOnlineColor = this.shouldRefreshOnlineColor;
-        this.shouldRefreshOnlineColor = false;
-
-        for (let y = 0; y < this.tilesY; y++) {
-            const col = this.tiles[y];
-            for (let x = 0; x < this.tilesX; x++) {
-                const t = col[x];
-
-                if (t.isInOtedBlock || this.isInOtedBlock(x, y)) {
-                    t.isInOtedBlock = true;
-                    if (this.time === 0) this.otedBlockTileCount++;
-                }
-
-                if (t.isInOnlineBlock || this.isInOnlineBlocks(x, y)) {
-                    t.isInOnlineBlock = true;
-                }
-
-                if (this.time === 0) {
-                    t.setColor(t.isInOnlineBlock ? this.onlineBlockColor : initialColor);
-                } else if (refreshOnlineColor && t.isInOnlineBlock) {
-                    t.setColor(this.onlineBlockColor);
-                } else if (!t.isInOtedBlock && !t.isInOnlineBlock) {
-                    t.setColor(fillColor);
-                }
-
-                t.draw(this.time);
-
-                if (!t.isInOnlineBlock && t.color.value !== initialColor.value && t.color.value !== fillColor.value) {
-                    if (colorCountObj[t.color.value]) {
-                        colorCountObj[t.color.value] = colorCountObj[t.color.value] + 1;
-                    } else {
-                        colorCountObj[t.color.value] = 1;
-                    }
-                }
-            }
+            delete this.dirtyTileSet[tileId];
         }
 
         const colorCount = Object.keys(colorCountObj).length;
         this.time++;
 
-        if (colorCount < activeColorCount) {
-            this.selectCandidate(colorCount);
-        }
+        this.selectCandidate(colorCount);
     }
 
-    this.selectCandidate = (colorCount) => {
+    this.selectCandidate = () => {
         const color = randomColor()
-        const randomTile = colorCount % 2 === 0 ? this.randomTile() : this.randomTileInOtedBlock();
+        const randomTile = this.randomTileInBlock();
         const callRandomCenter = new CustomEvent("TileCall", {
             detail: {
                 x: randomTile.gridX,
                 y: randomTile.gridY,
                 color: color,
                 time: this.time,
-                chosen: true
+                newSpawn: true
             }
         });
-        const callRandomWest = new CustomEvent("TileCall", {
-            detail: {
-                x: randomTile.gridX - 1,
-                y: randomTile.gridY,
-                color: color,
-                time: this.time,
-                chosen: true
-            }
-        });
-        const callRandomEast = new CustomEvent("TileCall", {
-            detail: {
-                x: randomTile.gridX + 1,
-                y: randomTile.gridY,
-                color: color,
-                time: this.time,
-                chosen: true
-            }
-        });
-        const callRandomNorth = new CustomEvent("TileCall", {
-            detail: {
-                x: randomTile.gridX,
-                y: randomTile.gridY - 1,
-                color: color,
-                time: this.time,
-                chosen: true
-            }
-        });
-        const callRandomSouth = new CustomEvent("TileCall", {
-            detail: {
-                x: randomTile.gridX,
-                y: randomTile.gridY + 1,
-                color: color,
-                time: this.time,
-                chosen: true
-            }
-        });
-        this.canvas.dispatchEvent(callRandomWest);
-        this.canvas.dispatchEvent(callRandomEast);
-        this.canvas.dispatchEvent(callRandomNorth);
-        this.canvas.dispatchEvent(callRandomCenter);
-        this.canvas.dispatchEvent(callRandomSouth);
+
+       this.canvas.dispatchEvent(callRandomCenter);
     }
 
     this.randomTile = () => {
@@ -194,24 +101,25 @@ function Grid(
         return this.tiles[randY][randX];
     }
 
-    this.randomTileInOtedBlock = () => {
+    this.randomTileInBlock = () => {
         while (true) {
             const randX = Math.floor(Math.random() * this.tilesX);
             const randY = Math.floor(Math.random() * this.tilesY);
-            if (this.isInOtedBlock(randX, randY)) {
+            if (this.isInBlock(randX, randY)) {
                 return this.tiles[randY][randX];
             }
         }
     }
 
-    this.isInOtedBlock = (tileX, tileY) => {
+    this.isInBlock = (tileX, tileY) => {
+        const blocks = getActiveBlocks();
         const targetXPercent = tileX / this.tilesX;
         const targetYPercent = tileY / this.tilesY;
-        for (let i = 0; i < otedBlocks.length; i++) {
-            const startX = otedBlocks[i][0];
-            const endX = otedBlocks[i][2];
-            const startY = otedBlocks[i][1];
-            const endY = otedBlocks[i][3];
+        for (let i = 0; i < blocks.length; i++) {
+            const startX = blocks[i][0];
+            const endX = blocks[i][2];
+            const startY = blocks[i][1];
+            const endY = blocks[i][3];
             if (targetXPercent >= startX && targetXPercent <= endX &&
                 targetYPercent >= startY && targetYPercent <= endY) {
                 return true;
@@ -219,27 +127,6 @@ function Grid(
         }
 
         return false;
-    }
-
-    this.isInOnlineBlocks = (tileX, tileY) => {
-        const targetXPercent = tileX / this.tilesX;
-        const targetYPercent = tileY / this.tilesY;
-        for (let i = 0; i < onlineBlocks.length; i++) {
-            const startX = onlineBlocks[i][0];
-            const endX = onlineBlocks[i][2];
-            const startY = onlineBlocks[i][1];
-            const endY = onlineBlocks[i][3];
-            if (targetXPercent >= startX && targetXPercent <= endX &&
-                targetYPercent >= startY && targetYPercent <= endY) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    this.clear = () => {
-        this.canvas.getContext("2d").clearRect(0, 0, this.width, this.height);
     }
 }
 

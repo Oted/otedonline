@@ -1,12 +1,9 @@
 import {Grid} from "./grid.js";
 
-console.log("deployed");
-
 let grid;
-const tickRateMs = 30;
+const tickRateMs = 5;
 
 const tick = () => {
-    grid.clear();
     grid.draw();
     setTimeout(() => {
         requestAnimationFrame(tick)

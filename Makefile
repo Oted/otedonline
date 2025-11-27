@@ -7,4 +7,4 @@ develop:
 	http-server -c-1 -p 8080
 
 deploy:
-	scp -r . ubuntu@${DEPLOY_IP}:/var/www/html/oted.online
+	rsync -av --exclude '*/' . ubuntu@${DEPLOY_IP}:/var/www/html/oted.online

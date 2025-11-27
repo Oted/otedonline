@@ -1,4 +1,7 @@
-const tileSize =  (() => {
+import {shuffle} from "./utils.js";
+import {DEFAULT_STRENGTH} from "./color.js";
+
+const TILE_SIZE =  (() => {
     //some mobile thing
     if (window.innerWidth < window.innerHeight) {
         if (window.innerHeight <= 1920) {
@@ -23,7 +26,9 @@ const tileSize =  (() => {
     return 15;
 })()
 
-const defaultOtedBlockAmplifier = 2.2;
+const DEFAULT_BLOCK_AMPLIFIER = 2.2;
+const MIN_EFFECTIVE_STRENGTH = 0.02;
+const STRENGTH_DECAY_WINDOW = 400;
 
 function Tile(
     gridX,
@@ -41,26 +46,35 @@ function Tile(
     this.context = canvas.getContext("2d");
     this.color = null;
     this.callMessage = null;
-    this.isInOtedBlock = false;
-    this.isInOnlineBlock = false;
-    this.otedBlockAmplifier = defaultOtedBlockAmplifier;
+    this.isInBlock = false;
+    this.coloredAt = 0;
+    this.id = `${gridX}-${gridY}`;
 
     this.draw = (time) => {
         if (this.callMessage && this.callMessage.time === time) {
-            this.setColor(this.callMessage.color);
-            this.handleChosenAtDraw(time, this.callMessage.chosen);
+            const incomingColor = this.callMessage.color;
+            const incomingColorStrength = incomingColor.strength;
+            const currentStrength = this.getEffectiveStrength(time);
+
+            const shouldChangeColor = !this.color ||
+                incomingColor.value !== this.color.value ||
+                incomingColorStrength > currentStrength;
+
+            if (shouldChangeColor) {
+                this.setColor(incomingColor, time);
+            }
+
+            this.handleDrawPropagation(time, this.callMessage.newSpawn);
             this.callMessage = null;
         }
 
-        //do not redraw when color did not change
-        if (this.prevColor?.value !== this.color.value) {
+        if (this.prevColor?.value !== this.color?.value) {
             this.drawBorder();
             this.fill();
         }
     }
 
-
-    this.handleChosenAtDraw = (time, chosen) => {
+    this.handleDrawPropagation = (time, newSpawn) => {
         const eventNorth = new CustomEvent("TileCall", {
             detail: {
                 x: this.gridX,
@@ -94,64 +108,57 @@ function Tile(
             }
         });
 
-        this.dispatch(
-            this.shuffle([eventEast,eventWest,eventNorth,eventSouth]),
-            chosen
-        )
-    }
+        const events = shuffle([eventEast, eventWest, eventNorth, eventSouth]);
+        const effectiveStrength = this.getEffectiveStrength(time);
 
-    this.shuffle = (list) => {
-        let i = list.length;
-        while (i) {
-            const j = Math.floor(Math.random() * i);
-            const t = list[--i];
-            list[i] = list[j];
-            list[j] = t;
-        }
-        return list;
-    }
-
-    this.dispatch = (events, chosen) => {
-        if (chosen) {
+        if (newSpawn) {
             events.forEach(e => {
                 this.canvas.dispatchEvent(e);
             })
-            events.map(e => {
-                e.detail.time += 1;
-                return e;
-            }).forEach(e => {
-                this.canvas.dispatchEvent(e);
-            })
-        } else if (this.isInOtedBlock) {
-            const thresh = this.color.strength * this.otedBlockAmplifier;
+        } else if (this.isInBlock) {
+            const thresh = Math.min(1, effectiveStrength * DEFAULT_BLOCK_AMPLIFIER);
             events.forEach(e => {
                 Math.random() < thresh ? this.canvas.dispatchEvent(e) : null;
             })
-        } else {
-            events.forEach(e => {
-                Math.random() < this.color.strength ? this.canvas.dispatchEvent(e) : null;
-            })
-        }
+        } 
+    }
+
+    this.dispatchDirtyTile = () => {
+        this.canvas.dispatchEvent(new CustomEvent("DirtyTile", {
+            detail: {
+                x: this.gridX,
+                y: this.gridY
+            }
+        }));
+    }
+
+    this.getEffectiveStrength = (time) => {
+        const age = Math.max(0, time - this.coloredAt);
+        const decay = Math.max(MIN_EFFECTIVE_STRENGTH, 1 - (age / STRENGTH_DECAY_WINDOW));
+
+        return this.color.strength * decay;
     }
 
     this.answerCall = (e) => {
         this.callMessage = e.detail;
+        this.dispatchDirtyTile();
     }
 
     this.fill = () => {
         this.context.fillStyle = this.color.value;
-        this.context.fillRect(this.canvasX, this.canvasY, tileSize, tileSize);
+        this.context.fillRect(this.canvasX, this.canvasY, TILE_SIZE, TILE_SIZE);
     }
 
     this.drawBorder = () => {
        this.context.strokeStyle = "rgba(0,0,0,.7)";
-       this.context.strokeRect(this.canvasX - 1, this.canvasY - 1, tileSize + 1, tileSize + 1);
+       this.context.strokeRect(this.canvasX - 1, this.canvasY - 1, TILE_SIZE + 1, TILE_SIZE + 1);
     }
 
-    this.setColor = (color) => {
+    this.setColor = (color, time) => {
         this.prevColor = this.color;
         this.color = color;
+        this.coloredAt = time;
     }
 }
 
-export {Tile, tileSize};
+export {Tile, TILE_SIZE};

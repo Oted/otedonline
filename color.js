@@ -1,11 +1,11 @@
-const defaultStrength = 0.28;
+const DEFAULT_STRENGTH = 0.28;
 
 function Color(
     value,
     strength
 ) {
     this.value = value;
-    this.strength = strength ? strength : defaultStrength;
+    this.strength = strength ? strength : DEFAULT_STRENGTH;
 }
 
 function randomColor() {
@@ -15,4 +15,4 @@ function randomColor() {
     return new Color(`hsl(${hue}, ${saturation}%, ${lightness}%)`)
 }
 
-export {randomColor, Color}
+export {randomColor, Color, DEFAULT_STRENGTH}
