@@ -1,5 +1,4 @@
 import {shuffle} from "./utils.js";
-import {DEFAULT_STRENGTH} from "./color.js";
 
 const TILE_SIZE =  (() => {
     //some mobile thing
@@ -24,7 +23,7 @@ const TILE_SIZE =  (() => {
     }
 
     return 15;
-})()
+})();
 
 const DEFAULT_BLOCK_AMPLIFIER = 2.2;
 const MIN_EFFECTIVE_STRENGTH = 0.02;
@@ -45,27 +44,19 @@ function Tile(
     this.canvas = canvas;
     this.context = canvas.getContext("2d");
     this.color = null;
-    this.callMessage = null;
+    this.waitingCall = null;
     this.isInBlock = false;
     this.coloredAt = 0;
     this.id = `${gridX}-${gridY}`;
 
     this.draw = (time) => {
-        if (this.callMessage && this.callMessage.time === time) {
-            const incomingColor = this.callMessage.color;
-            const incomingColorStrength = incomingColor.strength;
-            const currentStrength = this.getEffectiveStrength(time);
-
-            const shouldChangeColor = !this.color ||
-                incomingColor.value !== this.color.value ||
-                incomingColorStrength > currentStrength;
-
-            if (shouldChangeColor) {
-                this.setColor(incomingColor, time);
+        if (this.waitingCall && this.waitingCall.time === time) {
+            if (this.shouldChange(time)) {
+                this.setColor(this.waitingCall.color, time);
             }
 
-            this.handleDrawPropagation(time, this.callMessage.newSpawn);
-            this.callMessage = null;
+            this.handleDrawPropagation(time, this.waitingCall.newSpawn);
+            this.waitingCall = null;
         }
 
         if (this.prevColor?.value !== this.color?.value) {
@@ -130,7 +121,7 @@ function Tile(
                 y: this.gridY
             }
         }));
-    }
+   }
 
     this.getEffectiveStrength = (time) => {
         const age = Math.max(0, time - this.coloredAt);
@@ -139,9 +130,22 @@ function Tile(
         return this.color.strength * decay;
     }
 
-    this.answerCall = (e) => {
-        this.callMessage = e.detail;
-        this.dispatchDirtyTile();
+    this.shouldChange = (time) => {
+        const currentStrength = this.getEffectiveStrength(time);
+
+        const shouldChange = this.waitingCall.color.value !== this.color.value ||
+            this.waitingCall.color.strength > currentStrength;
+
+        return shouldChange;
+
+    }
+
+    this.pushCallToQueue = (e) => {
+        this.waitingCall = e.detail;
+
+        if (this.shouldChange(e.detail.time)) {
+            this.dispatchDirtyTile();
+        }
     }
 
     this.fill = () => {
@@ -151,7 +155,7 @@ function Tile(
 
     this.drawBorder = () => {
        this.context.strokeStyle = "rgba(0,0,0,.7)";
-       this.context.strokeRect(this.canvasX - 1, this.canvasY - 1, TILE_SIZE + 1, TILE_SIZE + 1);
+       //this.context.strokeRect(this.canvasX - 1, this.canvasY - 1, TILE_SIZE + 1, TILE_SIZE + 1);
     }
 
     this.setColor = (color, time) => {

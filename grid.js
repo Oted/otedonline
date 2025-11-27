@@ -18,7 +18,7 @@ function Grid(
 
     this.canvas.addEventListener("TileCall", (e) => {
         try {
-            this.tiles[e.detail.y][e.detail.x].answerCall(e);
+            this.tiles[e.detail.y][e.detail.x].pushCallToQueue(e);
         } catch (err) {
         }
     }, false)
@@ -57,7 +57,7 @@ function Grid(
             }
 
             if (this.time === 0) {
-                t.setColor(t.isInBlock ? INITIAL_COLOR : FILL_COLOR, this.time);
+                t.setColor(FILL_COLOR, this.time);
             }
 
             t.draw(this.time);
@@ -76,7 +76,9 @@ function Grid(
         const colorCount = Object.keys(colorCountObj).length;
         this.time++;
 
-        this.selectCandidate(colorCount);
+        if (colorCount < 30) {
+            this.selectCandidate(colorCount);
+        }
     }
 
     this.selectCandidate = () => {

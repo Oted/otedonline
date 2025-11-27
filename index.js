@@ -1,7 +1,7 @@
 import {Grid} from "./grid.js";
 
 let grid;
-const tickRateMs = 5;
+const tickRateMs = 20;
 
 const tick = () => {
     grid.draw();
