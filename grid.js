@@ -1,6 +1,6 @@
 import {Tile, TILE_SIZE} from "./tile.js";
 import {Color, randomColor} from "./color.js";
-import {otedBlocks, onlineBlocks} from "./blocks.js";
+import {getActiveBlocks} from "./blocks.js";
 
 const ACTIVE_COLOR_COUNT = 5;
 const FILL_COLOR = new Color("rgba(0,0,0,0.85)");
@@ -45,8 +45,8 @@ function Grid(
         this.canvas.height = window.innerHeight;
     }
 
-    this.otedBlockTileCount = 0;
-    this.onlineBlockColor = new Color("white");
+    this.blockTileCount = 0;
+    this.blockColor = new Color("white");
 
     this.draw = () => {
         let dirtyTilesToProcess = this.dirtyTileQueue.splice(0, this.dirtyTileQueue.length);
@@ -54,26 +54,20 @@ function Grid(
 
         while (dirtyTilesToProcess.length) {
             const t = dirtyTilesToProcess.shift();
-            if (t.isInOtedBlock || this.isInOtedBlock(t.gridX, t.gridY)) {
-                t.isInOtedBlock = true;
-                if (this.time === 0) this.otedBlockTileCount++;
-            }
-
-            if (t.isInOnlineBlock || this.isInOnlineBlocks(t.gridX, t.gridY)) {
-                t.isInOnlineBlock = true;
+            if (t.isInBlock || this.isInBlock(t.gridX, t.gridY)) {
+                t.isInBlock = true;
+                if (this.time === 0) this.blockTileCount++;
             }
 
             if (this.time === 0) {
-                t.setColor(t.isInOnlineBlock ? this.onlineBlockColor : INITIAL_COLOR);
-            } else if (t.isInOnlineBlock) {
-                t.setColor(this.onlineBlockColor);
-            } else if (!t.isInOtedBlock && !t.isInOnlineBlock) {
+                t.setColor(INITIAL_COLOR);
+            } else if (!t.isInBlock) {
                 t.setColor(FILL_COLOR);
             }
 
             t.draw(this.time);
 
-            if (!t.isInOnlineBlock && t.color.value !== INITIAL_COLOR.value && t.color.value !== FILL_COLOR.value) {
+            if (t.color.value !== INITIAL_COLOR.value && t.color.value !== FILL_COLOR.value) {
                 if (colorCountObj[t.color.value]) {
                     colorCountObj[t.color.value] = colorCountObj[t.color.value] + 1;
                 } else {
@@ -92,7 +86,7 @@ function Grid(
 
     this.selectCandidate = (colorCount) => {
         const color = randomColor()
-        const randomTile = colorCount % 2 === 0 ? this.randomTile() : this.randomTileInOtedBlock();
+        const randomTile = colorCount % 2 === 0 ? this.randomTile() : this.randomTileInBlock();
         const callRandomCenter = new CustomEvent("TileCall", {
             detail: {
                 x: randomTile.gridX,
@@ -112,41 +106,25 @@ function Grid(
         return this.tiles[randY][randX];
     }
 
-    this.randomTileInOtedBlock = () => {
+    this.randomTileInBlock = () => {
         while (true) {
             const randX = Math.floor(Math.random() * this.tilesX);
             const randY = Math.floor(Math.random() * this.tilesY);
-            if (this.isInOtedBlock(randX, randY)) {
+            if (this.isInBlock(randX, randY)) {
                 return this.tiles[randY][randX];
             }
         }
     }
 
-    this.isInOtedBlock = (tileX, tileY) => {
+    this.isInBlock = (tileX, tileY) => {
+        const blocks = getActiveBlocks();
         const targetXPercent = tileX / this.tilesX;
         const targetYPercent = tileY / this.tilesY;
-        for (let i = 0; i < otedBlocks.length; i++) {
-            const startX = otedBlocks[i][0];
-            const endX = otedBlocks[i][2];
-            const startY = otedBlocks[i][1];
-            const endY = otedBlocks[i][3];
-            if (targetXPercent >= startX && targetXPercent <= endX &&
-                targetYPercent >= startY && targetYPercent <= endY) {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    this.isInOnlineBlocks = (tileX, tileY) => {
-        const targetXPercent = tileX / this.tilesX;
-        const targetYPercent = tileY / this.tilesY;
-        for (let i = 0; i < onlineBlocks.length; i++) {
-            const startX = onlineBlocks[i][0];
-            const endX = onlineBlocks[i][2];
-            const startY = onlineBlocks[i][1];
-            const endY = onlineBlocks[i][3];
+        for (let i = 0; i < blocks.length; i++) {
+            const startX = blocks[i][0];
+            const endX = blocks[i][2];
+            const startY = blocks[i][1];
+            const endY = blocks[i][3];
             if (targetXPercent >= startX && targetXPercent <= endX &&
                 targetYPercent >= startY && targetYPercent <= endY) {
                 return true;

@@ -56,12 +56,16 @@ const onlineN2 = [
 
 const onlineE = [
     [0.76, 0.60, 0.79, 0.82], //left
-    [0.76, 0.60, 0.87, 0.65], //top
-    [0.76, 0.70, 0.87, 0.75], //mid
-    [0.76, 0.77, 0.87, 0.82], //bot
+    [0.76, 0.60, 0.85, 0.65], //top
+    [0.76, 0.68, 0.85, 0.73], //mid
+    [0.76, 0.77, 0.85, 0.82], //bot
 ];
 
 const otedBlocks = otedO.concat(otedT, otedE, otedD);
 const onlineBlocks = onlineO.concat(onlineN1, onlineL, onlineI, onlineN2, onlineE);
 
-export {otedBlocks, onlineBlocks};
+const getActiveBlocks = () => {
+    return otedBlocks.concat(onlineBlocks);
+
+}
+export {otedBlocks, onlineBlocks, getActiveBlocks};

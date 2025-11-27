@@ -25,7 +25,7 @@ const TILE_SIZE =  (() => {
     return 15;
 })()
 
-const DEFAULT_OTED_BLOCK_AMPLIFIER = 2.2;
+const DEFAULT_BLOCK_AMPLIFIER = 2.2;
 
 function Tile(
     gridX,
@@ -43,9 +43,8 @@ function Tile(
     this.context = canvas.getContext("2d");
     this.color = null;
     this.callMessage = null;
-    this.isInOtedBlock = false;
-    this.isInOnlineBlock = false;
-    this.otedBlockAmplifier = DEFAULT_OTED_BLOCK_AMPLIFIER;
+    this.isInBlock = false;
+    this.blockAmplifier = DEFAULT_BLOCK_AMPLIFIER;
 
     this.draw = (time) => {
         if (this.callMessage && this.callMessage.time === time) {
@@ -101,8 +100,8 @@ function Tile(
             events.forEach(e => {
                 this.canvas.dispatchEvent(e);
             })
-        } else if (this.isInOtedBlock) {
-            const thresh = this.color.strength * this.otedBlockAmplifier;
+        } else if (this.isInBlock) {
+            const thresh = this.color.strength * this.blockAmplifier;
             events.forEach(e => {
                 Math.random() < thresh ? this.canvas.dispatchEvent(e) : null;
             })
