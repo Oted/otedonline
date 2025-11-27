@@ -50,7 +50,6 @@ function Grid(
 
     this.draw = () => {
         let dirtyTilesToProcess = this.dirtyTileQueue.splice(0, this.dirtyTileQueue.length);
-        console.log(this.dirtyTileQueue.length);
         let colorCountObj = {};
         const refreshOnlineColor = this.shouldRefreshOnlineColor;
         this.shouldRefreshOnlineColor = false;
@@ -102,50 +101,11 @@ function Grid(
                 y: randomTile.gridY,
                 color: color,
                 time: this.time,
-                chosen: true
+                newSpawn : true
             }
         });
-        const callRandomWest = new CustomEvent("TileCall", {
-            detail: {
-                x: randomTile.gridX - 1,
-                y: randomTile.gridY,
-                color: color,
-                time: this.time,
-                chosen: true
-            }
-        });
-        const callRandomEast = new CustomEvent("TileCall", {
-            detail: {
-                x: randomTile.gridX + 1,
-                y: randomTile.gridY,
-                color: color,
-                time: this.time,
-                chosen: true
-            }
-        });
-        const callRandomNorth = new CustomEvent("TileCall", {
-            detail: {
-                x: randomTile.gridX,
-                y: randomTile.gridY - 1,
-                color: color,
-                time: this.time,
-                chosen: true
-            }
-        });
-        const callRandomSouth = new CustomEvent("TileCall", {
-            detail: {
-                x: randomTile.gridX,
-                y: randomTile.gridY + 1,
-                color: color,
-                time: this.time,
-                chosen: true
-            }
-        });
-        this.canvas.dispatchEvent(callRandomWest);
-        this.canvas.dispatchEvent(callRandomEast);
-        this.canvas.dispatchEvent(callRandomNorth);
-        this.canvas.dispatchEvent(callRandomCenter);
-        this.canvas.dispatchEvent(callRandomSouth);
+
+       this.canvas.dispatchEvent(callRandomCenter);
     }
 
     this.randomTile = () => {

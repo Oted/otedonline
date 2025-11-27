@@ -1,3 +1,5 @@
+import {shuffle} from "./utils.js";
+
 const tileSize =  (() => {
     //some mobile thing
     if (window.innerWidth < window.innerHeight) {
@@ -48,7 +50,7 @@ function Tile(
     this.draw = (time) => {
         if (this.callMessage && this.callMessage.time === time) {
             this.setColor(this.callMessage.color);
-            this.handleChosenAtDraw(time, this.callMessage.chosen);
+            this.handleDrawPropagation(time, this.callMessage.newSpawn);
             this.callMessage = null;
         }
 
@@ -59,7 +61,7 @@ function Tile(
         }
     }
 
-    this.handleChosenAtDraw = (time, chosen) => {
+    this.handleDrawPropagation = (time, newSpawn) => {
         const eventNorth = new CustomEvent("TileCall", {
             detail: {
                 x: this.gridX,
@@ -93,41 +95,10 @@ function Tile(
             }
         });
 
-        this.dispatch(
-            this.shuffle([eventEast,eventWest,eventNorth,eventSouth]),
-            chosen
-        )
-    }
+        const events = shuffle([eventEast, eventWest, eventNorth, eventSouth]);
 
-    this.shuffle = (list) => {
-        let i = list.length;
-        while (i) {
-            const j = Math.floor(Math.random() * i);
-            const t = list[--i];
-            list[i] = list[j];
-            list[j] = t;
-        }
-        return list;
-    }
-
-    this.dispatchDirtyTile = () => {
-        this.canvas.dispatchEvent(new CustomEvent("DirtyTile", {
-            detail: {
-                x: this.gridX,
-                y: this.gridY
-            }
-        }));
-    }
-
-    this.dispatch = (events, chosen) => {
-        if (chosen) {
+        if (newSpawn) {
             events.forEach(e => {
-                this.canvas.dispatchEvent(e);
-            })
-            events.map(e => {
-                e.detail.time += 1;
-                return e;
-            }).forEach(e => {
                 this.canvas.dispatchEvent(e);
             })
         } else if (this.isInOtedBlock) {
@@ -138,9 +109,17 @@ function Tile(
         } else {
             events.forEach(e => {
                 Math.random() < this.color.strength ? this.canvas.dispatchEvent(e) : null;
-                //this.canvas.dispatchEvent(e);
             })
         }
+    }
+
+    this.dispatchDirtyTile = () => {
+        this.canvas.dispatchEvent(new CustomEvent("DirtyTile", {
+            detail: {
+                x: this.gridX,
+                y: this.gridY
+            }
+        }));
     }
 
     this.answerCall = (e) => {
