@@ -1,4 +1,4 @@
-function shuffle(list) {
+const shuffle = (list) => {
     let i = list.length;
     while (i) {
         const j = Math.floor(Math.random() * i);
@@ -9,5 +9,8 @@ function shuffle(list) {
     return list;
 }
 
-export {shuffle};
+const randomFromArray = (arr) => {
+    return arr[Math.floor(Math.random() * arr.length)];
+}
 
+export {shuffle, randomFromArray};

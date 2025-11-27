@@ -1,15 +1,18 @@
 import {Tile, TILE_SIZE} from "./tile.js";
 import {Color, randomColor} from "./color.js";
-import {getActiveBlocks} from "./blocks.js";
+import {randomFromArray} from "./utils.js";
+import {getActiveBlocks, getBlockFromEachSubBlock} from "./blocks.js";
 
 const FILL_COLOR = new Color("rgba(0,0,0,0.85)");
-const INITIAL_COLOR = new Color("rgba(0,0,0,2)");
+const MAX_ACTIVE_COLORS = 8;
 
 function Grid(
     canvas,
 ) {
     this.canvas = canvas;
     this.dirtyTileSet = {};
+    this.blockPointer = 0;
+    this.targetBlocks = [];
 
     this.canvas.addEventListener("DirtyTile", (e) => {
         const t = this.tiles[e.detail.y][e.detail.x];
@@ -18,7 +21,7 @@ function Grid(
 
     this.canvas.addEventListener("TileCall", (e) => {
         try {
-            this.tiles[e.detail.y][e.detail.x].answerCall(e);
+            this.tiles[e.detail.y][e.detail.x].pushCallToQueue(e);
         } catch (err) {
         }
     }, false)
@@ -57,12 +60,12 @@ function Grid(
             }
 
             if (this.time === 0) {
-                t.setColor(t.isInBlock ? INITIAL_COLOR : FILL_COLOR, this.time);
+                t.setColor(FILL_COLOR, this.time);
             }
 
             t.draw(this.time);
 
-            if (t.color.value !== INITIAL_COLOR.value && t.color.value !== FILL_COLOR.value) {
+            if (t.color.value !== FILL_COLOR.value) {
                 if (colorCountObj[t.color.value]) {
                     colorCountObj[t.color.value] = colorCountObj[t.color.value] + 1;
                 } else {
@@ -76,7 +79,9 @@ function Grid(
         const colorCount = Object.keys(colorCountObj).length;
         this.time++;
 
-        this.selectCandidate(colorCount);
+        if (colorCount < MAX_ACTIVE_COLORS) {
+            this.selectCandidate(colorCount);
+        }
     }
 
     this.selectCandidate = () => {
@@ -95,24 +100,36 @@ function Grid(
        this.canvas.dispatchEvent(callRandomCenter);
     }
 
-    this.randomTile = () => {
-        const randX = Math.floor(Math.random() * this.tilesX);
-        const randY = Math.floor(Math.random() * this.tilesY);
-        return this.tiles[randY][randX];
+    this.selectNextBlockTarget = () => {
+        if (this.blockPointer >= this.targetBlocks.length) {
+            this.blockPointer = 0;
+            this.targetBlocks = getBlockFromEachSubBlock();
+        }
+        
+        const block = this.targetBlocks[this.blockPointer];
+        this.blockPointer++;
+        return block;
     }
 
     this.randomTileInBlock = () => {
-        while (true) {
-            const randX = Math.floor(Math.random() * this.tilesX);
-            const randY = Math.floor(Math.random() * this.tilesY);
-            if (this.isInBlock(randX, randY)) {
-                return this.tiles[randY][randX];
-            }
-        }
+        const selectedBlock = this.selectNextBlockTarget();
+
+        const startXPercent = selectedBlock[0];
+        const endXPercent = selectedBlock[2];
+        const startYPercent = selectedBlock[1];
+        const endYPercent = selectedBlock[3];
+
+        const randomTileXPercent = startXPercent + (Math.random() * (endXPercent - startXPercent));
+        const randomTileYPercent = startYPercent + (Math.random() * (endYPercent - startYPercent));
+
+        const targetTileX = Math.floor(randomTileXPercent * this.tilesX);
+        const targetTileY = Math.floor(randomTileYPercent * this.tilesY);
+        return this.tiles[targetTileY][targetTileX];
     }
 
     this.isInBlock = (tileX, tileY) => {
         const blocks = getActiveBlocks();
+
         const targetXPercent = tileX / this.tilesX;
         const targetYPercent = tileY / this.tilesY;
         for (let i = 0; i < blocks.length; i++) {

@@ -1,3 +1,5 @@
+import {shuffle, randomFromArray} from "./utils.js";
+
 const otedO = [
     [0.12, 0.18, 0.24, 0.26], //top
     [0.10, 0.21, 0.15, 0.53], //left
@@ -65,7 +67,22 @@ const otedBlocks = otedO.concat(otedT, otedE, otedD);
 const onlineBlocks = onlineO.concat(onlineN1, onlineL, onlineI, onlineN2, onlineE);
 
 const getActiveBlocks = () => {
-    return otedBlocks.concat(onlineBlocks);
-
+    return shuffle(otedBlocks.concat(onlineBlocks));
 }
-export {otedBlocks, onlineBlocks, getActiveBlocks};
+
+const getBlockFromEachSubBlock = () => {
+    return [
+        randomFromArray(otedO),
+        randomFromArray(otedT),
+        randomFromArray(otedE),
+        randomFromArray(otedD),
+        randomFromArray(onlineO),
+        randomFromArray(onlineN1),
+        randomFromArray(onlineL),
+        randomFromArray(onlineI),
+        randomFromArray(onlineN2),
+        randomFromArray(onlineE),
+    ];
+}
+
+export {getActiveBlocks, getBlockFromEachSubBlock};
