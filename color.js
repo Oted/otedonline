@@ -15,4 +15,4 @@ function randomColor() {
     return new Color(`hsl(${hue}, ${saturation}%, ${lightness}%)`)
 }
 
-export {randomColor, Color}
+export {randomColor, Color, DEFAULT_STRENGTH}

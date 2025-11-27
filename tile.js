@@ -1,4 +1,5 @@
 import {shuffle} from "./utils.js";
+import {DEFAULT_STRENGTH} from "./color.js";
 
 const TILE_SIZE =  (() => {
     //some mobile thing
@@ -26,7 +27,7 @@ const TILE_SIZE =  (() => {
 })()
 
 const DEFAULT_BLOCK_AMPLIFIER = 2.2;
-const MIN_EFFECTIVE_STRENGTH = 0.05;
+const MIN_EFFECTIVE_STRENGTH = 0.02;
 const STRENGTH_DECAY_WINDOW = 400;
 
 function Tile(
@@ -46,19 +47,20 @@ function Tile(
     this.color = null;
     this.callMessage = null;
     this.isInBlock = false;
-    this.isDirty = false;
     this.coloredAt = 0;
+    this.id = `${gridX}-${gridY}`;
 
     this.draw = (time) => {
         if (this.callMessage && this.callMessage.time === time) {
             const incomingColor = this.callMessage.color;
-            const incomingStrength = incomingColor?.strength ?? 0;
+            const incomingColorStrength = incomingColor.strength;
             const currentStrength = this.getEffectiveStrength(time);
-            const colorChanged = !this.color ||
-                incomingColor.value !== this.color.value ||
-                incomingStrength > currentStrength;
 
-            if (colorChanged) {
+            const shouldChangeColor = !this.color ||
+                incomingColor.value !== this.color.value ||
+                incomingColorStrength > currentStrength;
+
+            if (shouldChangeColor) {
                 this.setColor(incomingColor, time);
             }
 
@@ -70,15 +72,9 @@ function Tile(
             this.drawBorder();
             this.fill();
         }
-
-        this.isDirty = false;
     }
 
     this.handleDrawPropagation = (time, newSpawn) => {
-        if (!this.color) {
-            return;
-        }
-
         const eventNorth = new CustomEvent("TileCall", {
             detail: {
                 x: this.gridX,
@@ -124,18 +120,10 @@ function Tile(
             events.forEach(e => {
                 Math.random() < thresh ? this.canvas.dispatchEvent(e) : null;
             })
-        } else {
-            events.forEach(e => {
-                Math.random() < effectiveStrength ? this.canvas.dispatchEvent(e) : null;
-            })
-        }
+        } 
     }
 
     this.dispatchDirtyTile = () => {
-        if (this.isDirty) {
-            return;
-        }
-        this.isDirty = true;
         this.canvas.dispatchEvent(new CustomEvent("DirtyTile", {
             detail: {
                 x: this.gridX,
@@ -145,16 +133,9 @@ function Tile(
     }
 
     this.getEffectiveStrength = (time) => {
-        if (!this.color) {
-            return 0;
-        }
-
-        if (typeof time !== "number") {
-            return this.color.strength;
-        }
-
         const age = Math.max(0, time - this.coloredAt);
         const decay = Math.max(MIN_EFFECTIVE_STRENGTH, 1 - (age / STRENGTH_DECAY_WINDOW));
+
         return this.color.strength * decay;
     }
 
@@ -176,9 +157,7 @@ function Tile(
     this.setColor = (color, time) => {
         this.prevColor = this.color;
         this.color = color;
-        if (typeof time === "number") {
-            this.coloredAt = time;
-        }
+        this.coloredAt = time;
     }
 }
 

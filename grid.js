@@ -9,10 +9,11 @@ function Grid(
     canvas,
 ) {
     this.canvas = canvas;
-    this.dirtyTileQueue = [];
+    this.dirtyTileSet = {};
 
     this.canvas.addEventListener("DirtyTile", (e) => {
-        this.dirtyTileQueue.push(this.tiles[e.detail.y][e.detail.x]);
+        const t = this.tiles[e.detail.y][e.detail.x];
+        this.dirtyTileSet[t.id] = t;
     }, false)
 
     this.canvas.addEventListener("TileCall", (e) => {
@@ -38,10 +39,7 @@ function Grid(
     this.tilesY = this.tiles.length;
 
     this.resize = () => {
-        this.dirtyTileQueue = this.tiles.flat();
-        this.dirtyTileQueue.forEach((tile) => {
-            tile.isDirty = true;
-        });
+        this.dirtyTileSet = Object.fromEntries(this.tiles.flat().map(t => [t.id, t]));
         this.time = 0;
         this.canvas.width = window.innerWidth;
         this.canvas.height = window.innerHeight;
@@ -50,11 +48,10 @@ function Grid(
     this.blockColor = new Color("white");
 
     this.draw = () => {
-        let dirtyTilesToProcess = this.dirtyTileQueue.splice(0, this.dirtyTileQueue.length);
         let colorCountObj = {};
 
-        while (dirtyTilesToProcess.length) {
-            const t = dirtyTilesToProcess.shift();
+        for (const tileId in this.dirtyTileSet) {
+            const t = this.dirtyTileSet[tileId];
             if (t.isInBlock || this.isInBlock(t.gridX, t.gridY)) {
                 t.isInBlock = true;
             }
@@ -72,6 +69,8 @@ function Grid(
                     colorCountObj[t.color.value] = 1;
                 }
             }
+
+            delete this.dirtyTileSet[tileId];
         }
 
         const colorCount = Object.keys(colorCountObj).length;
