@@ -1,6 +1,6 @@
 import {shuffle} from "./utils.js";
 
-const tileSize =  (() => {
+const TILE_SIZE =  (() => {
     //some mobile thing
     if (window.innerWidth < window.innerHeight) {
         if (window.innerHeight <= 1920) {
@@ -25,7 +25,7 @@ const tileSize =  (() => {
     return 15;
 })()
 
-const defaultOtedBlockAmplifier = 2.2;
+const DEFAULT_OTED_BLOCK_AMPLIFIER = 2.2;
 
 function Tile(
     gridX,
@@ -45,7 +45,7 @@ function Tile(
     this.callMessage = null;
     this.isInOtedBlock = false;
     this.isInOnlineBlock = false;
-    this.otedBlockAmplifier = defaultOtedBlockAmplifier;
+    this.otedBlockAmplifier = DEFAULT_OTED_BLOCK_AMPLIFIER;
 
     this.draw = (time) => {
         if (this.callMessage && this.callMessage.time === time) {
@@ -123,18 +123,18 @@ function Tile(
     }
 
     this.answerCall = (e) => {
-        this.callMessage = e.detail;
         this.dispatchDirtyTile();
+        this.callMessage = e.detail;
     }
 
     this.fill = () => {
         this.context.fillStyle = this.color.value;
-        this.context.fillRect(this.canvasX, this.canvasY, tileSize, tileSize);
+        this.context.fillRect(this.canvasX, this.canvasY, TILE_SIZE, TILE_SIZE);
     }
 
     this.drawBorder = () => {
        this.context.strokeStyle = "rgba(0,0,0,.7)";
-       this.context.strokeRect(this.canvasX - 1, this.canvasY - 1, tileSize + 1, tileSize + 1);
+       this.context.strokeRect(this.canvasX - 1, this.canvasY - 1, TILE_SIZE + 1, TILE_SIZE + 1);
     }
 
     this.setColor = (color) => {
@@ -143,4 +143,4 @@ function Tile(
     }
 }
 
-export {Tile, tileSize};
+export {Tile, TILE_SIZE};

@@ -1,9 +1,10 @@
-import {Tile, tileSize} from "./tile.js";
+import {Tile, TILE_SIZE} from "./tile.js";
 import {Color, randomColor} from "./color.js";
 import {otedBlocks, onlineBlocks} from "./blocks.js";
-const activeColorCount = 5;
-const fillColor = new Color("rgba(0,0,0,0.85)");
-const initialColor = new Color("rgba(0,0,0,2)");
+
+const ACTIVE_COLOR_COUNT = 5;
+const FILL_COLOR = new Color("rgba(0,0,0,0.85)");
+const INITIAL_COLOR = new Color("rgba(0,0,0,2)");
 
 function Grid(
     canvas,
@@ -22,13 +23,13 @@ function Grid(
         }
     }, false)
 
-    this.tiles = Array(Math.ceil(window.innerHeight / tileSize)).fill().map((_, y) => {
-        return Array(Math.ceil(window.innerWidth / tileSize)).fill().map((_, x) => {
+    this.tiles = Array(Math.ceil(window.innerHeight / TILE_SIZE)).fill().map((_, y) => {
+        return Array(Math.ceil(window.innerWidth / TILE_SIZE)).fill().map((_, x) => {
             return new Tile(
                 x,
                 y,
-                x * tileSize,
-                y * tileSize,
+                x * TILE_SIZE,
+                y * TILE_SIZE,
                 this.canvas,
             );
         })
@@ -46,13 +47,10 @@ function Grid(
 
     this.otedBlockTileCount = 0;
     this.onlineBlockColor = new Color("white");
-    this.shouldRefreshOnlineColor = false;
 
     this.draw = () => {
         let dirtyTilesToProcess = this.dirtyTileQueue.splice(0, this.dirtyTileQueue.length);
         let colorCountObj = {};
-        const refreshOnlineColor = this.shouldRefreshOnlineColor;
-        this.shouldRefreshOnlineColor = false;
 
         while (dirtyTilesToProcess.length) {
             const t = dirtyTilesToProcess.shift();
@@ -66,16 +64,16 @@ function Grid(
             }
 
             if (this.time === 0) {
-                t.setColor(t.isInOnlineBlock ? this.onlineBlockColor : initialColor);
-            } else if (refreshOnlineColor && t.isInOnlineBlock) {
+                t.setColor(t.isInOnlineBlock ? this.onlineBlockColor : INITIAL_COLOR);
+            } else if (t.isInOnlineBlock) {
                 t.setColor(this.onlineBlockColor);
             } else if (!t.isInOtedBlock && !t.isInOnlineBlock) {
-                t.setColor(fillColor);
+                t.setColor(FILL_COLOR);
             }
 
             t.draw(this.time);
 
-            if (!t.isInOnlineBlock && t.color.value !== initialColor.value && t.color.value !== fillColor.value) {
+            if (!t.isInOnlineBlock && t.color.value !== INITIAL_COLOR.value && t.color.value !== FILL_COLOR.value) {
                 if (colorCountObj[t.color.value]) {
                     colorCountObj[t.color.value] = colorCountObj[t.color.value] + 1;
                 } else {
@@ -87,7 +85,7 @@ function Grid(
         const colorCount = Object.keys(colorCountObj).length;
         this.time++;
 
-        if (colorCount < activeColorCount) {
+        if (colorCount < ACTIVE_COLOR_COUNT) {
             this.selectCandidate(colorCount);
         }
     }
