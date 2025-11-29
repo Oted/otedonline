@@ -4,7 +4,7 @@ import {randomFromArray} from "./utils.js";
 import {getActiveBlocks, getBlockFromEachSubBlock} from "./blocks.js";
 
 const FILL_COLOR = new Color("rgba(0,0,0,0.85)");
-const MAX_ACTIVE_COLORS = 8;
+const MAX_ACTIVE_COLORS = 30;
 
 function Grid(
     canvas,
@@ -48,8 +48,6 @@ function Grid(
         this.canvas.height = window.innerHeight;
     }
 
-    this.blockColor = new Color("white");
-
     this.draw = () => {
         let colorCountObj = {};
 
@@ -80,12 +78,12 @@ function Grid(
         this.time++;
 
         if (colorCount < MAX_ACTIVE_COLORS) {
-            this.selectCandidate(colorCount);
+            this.selectCandidate();
         }
     }
 
     this.selectCandidate = () => {
-        const color = randomColor()
+        const color = randomColor(this.time);
         const randomTile = this.randomTileInBlock();
         const callRandomCenter = new CustomEvent("TileCall", {
             detail: {
