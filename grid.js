@@ -3,8 +3,9 @@ import {Color, randomColor} from "./color.js";
 import {randomFromArray} from "./utils.js";
 import {getActiveBlocks, getBlockFromEachSubBlock} from "./blocks.js";
 
-const FILL_COLOR = new Color("rgba(0,0,0,0.85)");
-const MAX_ACTIVE_COLORS = 8;
+const BG_COLOR = getComputedStyle(document.documentElement).getPropertyValue('--bg-color');
+const FILL_COLOR = new Color(`${BG_COLOR}`);
+const MAX_ACTIVE_COLORS = 10;
 
 function Grid(
     canvas,
@@ -20,10 +21,7 @@ function Grid(
     }, false)
 
     this.canvas.addEventListener("TileCall", (e) => {
-        try {
-            this.tiles[e.detail.y][e.detail.x].pushCallToQueue(e);
-        } catch (err) {
-        }
+        this.tiles[e.detail.y][e.detail.x].pushCallToQueue(e);
     }, false)
 
     this.tiles = Array(Math.ceil(window.innerHeight / TILE_SIZE)).fill().map((_, y) => {
@@ -34,6 +32,7 @@ function Grid(
                 x * TILE_SIZE,
                 y * TILE_SIZE,
                 this.canvas,
+                FILL_COLOR
             );
         })
     })
@@ -42,13 +41,11 @@ function Grid(
     this.tilesY = this.tiles.length;
 
     this.resize = () => {
-        this.dirtyTileSet = Object.fromEntries(this.tiles.flat().map(t => [t.id, t]));
+        //this.dirtyTileSet = Object.fromEntries(this.tiles.flat().map(t => [t.id, t]));
         this.time = 0;
-        this.canvas.width = window.innerWidth;
-        this.canvas.height = window.innerHeight;
+        this.canvas.width = canvas.clientWidth;
+        this.canvas.height = canvas.clientHeight;
     }
-
-    this.blockColor = new Color("white");
 
     this.draw = () => {
         let colorCountObj = {};
@@ -79,13 +76,14 @@ function Grid(
         const colorCount = Object.keys(colorCountObj).length;
         this.time++;
 
-        if (colorCount < MAX_ACTIVE_COLORS) {
-            this.selectCandidate(colorCount);
+        const maxActive = Math.min(MAX_ACTIVE_COLORS, Math.ceil(this.time / 200));
+        if (colorCount < maxActive) {
+            this.selectCandidate();
         }
     }
 
     this.selectCandidate = () => {
-        const color = randomColor()
+        const color = randomColor(this.time);
         const randomTile = this.randomTileInBlock();
         const callRandomCenter = new CustomEvent("TileCall", {
             detail: {

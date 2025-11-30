@@ -1,14 +1,41 @@
-body {
-    padding: 0;
-    margin: 0;
-    height: 100%;
+:root {
+    --bg-color: rgb(169, 169, 169);
 }
 
-html {
-    height: 100%;
+body {
+    background-color: var(--bg-color);
+    font-family: "JetBrains Mono", monospace;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-flow: column;
 }
 
 #canvas {
     width: 100%;
-    height: 100%;
+    flex: 1 1 auto;
+    display: block;
+}
+
+#nav {
+    flex-flow: row;
+    display: flex;
+    gap: 1rem;
+    height: 3rem;
+    width: 100%;
+    background-color: var(--bg-color);
+}
+
+#nav > button {
+    flex: 1;
+    font-family: inherit;
+    font-weight: 500;
+    font-size: 18px;
+    letter-spacing: 0.05em;
+    border-radius: 0.8em;
+    cursor: pointer;
+    border: none;
+    color: black;
 }

@@ -1,9 +1,6 @@
 import {shuffle} from "./utils.js";
 
 const TILE_SIZE = 2;
-const DEFAULT_BLOCK_AMPLIFIER = 2.2;
-const MIN_EFFECTIVE_STRENGTH = 0.02;
-const STRENGTH_DECAY_WINDOW = 400;
 
 function Tile(
     gridX,
@@ -11,6 +8,7 @@ function Tile(
     canvasX,
     canvasY,
     canvas,
+    color
 ) {
     this.prevColor = null;
     this.gridX = gridX;
@@ -19,10 +17,9 @@ function Tile(
     this.canvasY = canvasY;
     this.canvas = canvas;
     this.context = canvas.getContext("2d");
-    this.color = null;
+    this.color = color;
     this.waitingCall = null;
     this.isInBlock = false;
-    this.coloredAt = 0;
     this.id = `${gridX}-${gridY}`;
 
     this.draw = (time) => {
@@ -80,14 +77,14 @@ function Tile(
         });
 
         const events = shuffle([eventEast, eventWest, eventNorth, eventSouth]);
-        const effectiveStrength = this.getEffectiveStrength(time);
+        const effectiveStrength = this.color.getEffectiveStrength(time);
 
         if (newSpawn) {
             events.forEach(e => {
                 this.canvas.dispatchEvent(e);
             })
         } else if (this.isInBlock) {
-            const thresh = Math.min(1, effectiveStrength * DEFAULT_BLOCK_AMPLIFIER);
+            const thresh = Math.min(1, effectiveStrength);
             events.forEach(e => {
                 Math.random() < thresh ? this.canvas.dispatchEvent(e) : null;
             })
@@ -103,16 +100,8 @@ function Tile(
         }));
    }
 
-    this.getEffectiveStrength = (time) => {
-        const timeStretch = Math.ceil(time / 300);
-        const age = Math.max(0, timeStretch - this.coloredAt);
-        const decay = Math.max(MIN_EFFECTIVE_STRENGTH, 1 - (age / STRENGTH_DECAY_WINDOW));
-
-        return this.color.strength * decay;
-    }
-
     this.shouldChange = (time) => {
-        const currentStrength = this.getEffectiveStrength(time);
+        const currentStrength = this.color.getEffectiveStrength(time);
 
         let shouldChange = this.waitingCall.color.value !== this.color.value ||
             this.waitingCall.color.strength > currentStrength;
@@ -135,14 +124,13 @@ function Tile(
     }
 
     this.drawBorder = () => {
-       this.context.strokeStyle = "rgba(0,0,0,.8)";
+       this.context.strokeStyle = "rgba(0,0,0,.55)";
        this.context.strokeRect(this.canvasX - 1, this.canvasY - 1, TILE_SIZE + 1, TILE_SIZE + 1);
     }
 
     this.setColor = (color, time) => {
         this.prevColor = this.color;
         this.color = color;
-        this.coloredAt = time;
     }
 }
 
