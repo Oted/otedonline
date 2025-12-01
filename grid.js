@@ -14,6 +14,7 @@ function Grid(
     this.dirtyTileSet = {};
     this.blockPointer = 0;
     this.targetBlocks = [];
+    this.time = 0;
 
     this.canvas.addEventListener("DirtyTile", (e) => {
         const t = this.tiles[e.detail.y][e.detail.x];
@@ -40,11 +41,13 @@ function Grid(
     this.tilesX = this.tiles[0].length;
     this.tilesY = this.tiles.length;
 
-    this.resize = () => {
-        //this.dirtyTileSet = Object.fromEntries(this.tiles.flat().map(t => [t.id, t]));
+    this.reset = () => {
+        this.canvas.width = this.canvas.parentNode.clientWidth;
+        this.canvas.height = this.canvas.parentNode.clientHeight;
         this.time = 0;
-        this.canvas.width = canvas.clientWidth;
-        this.canvas.height = canvas.clientHeight;
+        this.dirtyTileSet = {};
+        this.blockPointer = 0;
+        this.targetBlocks = [];
     }
 
     this.draw = () => {
