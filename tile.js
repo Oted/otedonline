@@ -1,6 +1,6 @@
 import {shuffle} from "./utils.js";
 
-const TILE_SIZE = 2;
+const TILE_SIZE = 3;
 
 function Tile(
     gridX,
