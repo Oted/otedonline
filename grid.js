@@ -25,29 +25,29 @@ function Grid(
         this.tiles[e.detail.y][e.detail.x].pushCallToQueue(e);
     }, false)
 
-    this.tiles = Array(Math.ceil(window.innerHeight / TILE_SIZE)).fill().map((_, y) => {
-        return Array(Math.ceil(window.innerWidth / TILE_SIZE)).fill().map((_, x) => {
-            return new Tile(
-                x,
-                y,
-                x * TILE_SIZE,
-                y * TILE_SIZE,
-                this.canvas,
-                FILL_COLOR
-            );
-        })
-    })
-
-    this.tilesX = this.tiles[0].length;
-    this.tilesY = this.tiles.length;
-
-    this.reset = () => {
+    this.init = () => {
         this.canvas.width = this.canvas.parentNode.clientWidth;
         this.canvas.height = this.canvas.parentNode.clientHeight;
         this.time = 0;
         this.dirtyTileSet = {};
         this.blockPointer = 0;
         this.targetBlocks = [];
+
+        this.tiles = Array(Math.ceil(window.innerHeight / TILE_SIZE)).fill().map((_, y) => {
+            return Array(Math.ceil(window.innerWidth / TILE_SIZE)).fill().map((_, x) => {
+                return new Tile(
+                    x,
+                    y,
+                    x * TILE_SIZE,
+                    y * TILE_SIZE,
+                    this.canvas,
+                    FILL_COLOR
+                );
+            })
+        })
+
+        this.tilesX = this.tiles[0].length;
+        this.tilesY = this.tiles.length;
     }
 
     this.draw = () => {

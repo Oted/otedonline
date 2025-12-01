@@ -13,8 +13,7 @@ const tick = () => {
 const init = () => {
     const canvas = document.getElementById("canvas");
     grid = new Grid(canvas);
-    grid.reset();
-
+    grid.init();
     tick();
 }
 
@@ -23,5 +22,5 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 window.addEventListener("resize", () => {
-    grid.reset();
+    grid.init();
 }, true);
