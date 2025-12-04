@@ -4,7 +4,7 @@ import {Blocks} from "./blocks.js";
 
 let grid;
 
-const tickRateMs = 10;
+const tickRateMs = 15;
 let ticks = 0;
 
 const tick = () => {
