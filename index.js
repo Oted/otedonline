@@ -9,10 +9,8 @@ let ticks = 0;
 
 const tick = () => {
     ticks++;
-    if (ticks < 4000) {
 
     grid.draw();
-    }
     setTimeout(() => {
         requestAnimationFrame(tick)
     }, tickRateMs)

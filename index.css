@@ -1,6 +1,10 @@
 :root {
-    --bg-color: rgb(174, 174, 174);
-    --nav-color: rgb(231, 231, 231);
+    --bg-color: rgb(53, 42, 58);
+    --nav-color: rgb(238, 238, 245);
+}
+
+a {
+    all: unset;
 }
 
 body {
@@ -27,15 +31,17 @@ body {
 }
 
 #nav {
+    text-align: center;
+    align-items: center;
     flex-flow: row;
     display: flex;
-    height: 3rem;
+    height: 4rem;
     width: 100%;
     background-color: var(--nav-color);
 }
 
+
 .nav-button {
-    flex: 1 1 auto;
     background-color: var(--nav-color);
     font-family: inherit;
     font-weight: 500;
@@ -46,12 +52,31 @@ body {
     color: black;
 }
 
+#nav-home {
+    cursor: pointer;
+    flex: 1 1 auto;
+}
+
+#nav-middle {
+    flex-grow: 5;
+}
+
+#nav-burger {
+    cursor: pointer;
+    flex: 0 0 auto;
+    width: 4rem;
+}
+
+#nav-burger > img {
+    height:3rem;
+    width: 3rem;
+}
+
 #foot {
     align-items: center;
     text-align: center;
-    flex-flow: row;
     display: flex;
-    height: 3rem;
+    height: 4rem;
     width: 100%;
     background-color: var(--nav-color);
     font-size: 12px;

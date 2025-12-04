@@ -1,10 +1,10 @@
 import {Tile, TILE_SIZE} from "./tile.js";
-import {Color, randomColor} from "./color.js";
+import {Color, randomColor, pickedColor} from "./color.js";
 import {randomFromArray} from "./utils.js";
 
 const BG_COLOR = getComputedStyle(document.documentElement).getPropertyValue('--bg-color');
 const FILL_COLOR = new Color(`${BG_COLOR}`);
-const MAX_ACTIVE_COLORS = 2;
+const MAX_ACTIVE_COLORS = 15;
 
 function Grid(
     canvas,
@@ -34,8 +34,8 @@ function Grid(
         this.blockPointer = 0;
         this.targetBlocks = [];
 
-        this.tiles = Array(Math.ceil(window.innerHeight / TILE_SIZE)).fill().map((_, y) => {
-            return Array(Math.ceil(window.innerWidth / TILE_SIZE)).fill().map((_, x) => {
+        this.tiles = Array(Math.ceil(this.canvas.height / TILE_SIZE)).fill().map((_, y) => {
+            return Array(Math.ceil(this.canvas.width / TILE_SIZE)).fill().map((_, x) => {
                 return new Tile(
                     x,
                     y,
@@ -87,7 +87,9 @@ function Grid(
     }
 
     this.selectCandidate = () => {
-        const color = randomColor(this.time);
+        //const color = randomColor(this.time);
+        const color = pickedColor(this.time);
+
         const randomTile = this.randomTileInBlock();
         const callRandomCenter = new CustomEvent("TileCall", {
             detail: {

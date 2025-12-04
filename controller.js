@@ -9,10 +9,10 @@ function Controller(
     this.grid = grid;
     this.blocks = blocks;
 
-    this.aboutButton.addEventListener("click", () => {
-        this.blocks.toggleButtonBlock();
-        this.grid.init();
-    })
+    //this.aboutButton.addEventListener("click", () => {
+        //this.blocks.toggleButtonBlock();
+        //this.grid.init();
+    //})
 }
 
 export {Controller};
