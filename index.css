@@ -4,6 +4,7 @@
 }
 
 body {
+    gap: 1rem;
     background-color: var(--bg-color);
     font-family: "JetBrains Mono", monospace;
     padding: 0;
@@ -34,7 +35,7 @@ body {
 }
 
 .nav-button {
-    flex: 1;
+    flex: 1 1 auto;
     background-color: var(--nav-color);
     font-family: inherit;
     font-weight: 500;
@@ -45,3 +46,26 @@ body {
     color: black;
 }
 
+#foot {
+    align-items: center;
+    text-align: center;
+    flex-flow: row;
+    display: flex;
+    height: 3rem;
+    width: 100%;
+    background-color: var(--nav-color);
+    font-size: 12px;
+}
+
+#foot > * {
+    flex: 1;
+}
+
+#foot > span {
+    flex-grow:4;
+}
+
+.foot-icon > img {
+    height: 2rem;
+    width: 2rem;
+}

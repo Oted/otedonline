@@ -1,6 +1,6 @@
-import {shuffle} from "./utils.js";
+import {shuffle, isMobile} from "./utils.js";
 
-const TILE_SIZE = 3;
+const TILE_SIZE = isMobile() ? 3 : 5;
 
 function Tile(
     gridX,
@@ -35,7 +35,7 @@ function Tile(
 
     this.answerCall = (time) => {
         if (this.shouldChange(time)) {
-            this.setColor(this.waitingCall.color, time);
+            this.setColor(this.waitingCall.color);
         }
 
         this.handleCallPropagation(time, this.waitingCall.newSpawn);
@@ -105,9 +105,8 @@ function Tile(
 
         let shouldChange = this.waitingCall.color.value !== this.color.value ||
             this.waitingCall.color.strength > currentStrength;
-        
-        return shouldChange;
 
+        return shouldChange;
     }
 
     this.pushCallToQueue = (e) => {
@@ -124,11 +123,11 @@ function Tile(
     }
 
     this.drawBorder = () => {
-       this.context.strokeStyle = "rgba(0,0,0,.55)";
+       this.context.strokeStyle = "rgba(0,0,0,.8)";
        this.context.strokeRect(this.canvasX - 1, this.canvasY - 1, TILE_SIZE + 1, TILE_SIZE + 1);
     }
 
-    this.setColor = (color, time) => {
+    this.setColor = (color) => {
         this.prevColor = this.color;
         this.color = color;
     }

@@ -1,16 +1,17 @@
 import {Tile, TILE_SIZE} from "./tile.js";
 import {Color, randomColor} from "./color.js";
 import {randomFromArray} from "./utils.js";
-import {getActiveBlocks, getBlockFromEachSubBlock} from "./blocks.js";
 
 const BG_COLOR = getComputedStyle(document.documentElement).getPropertyValue('--bg-color');
 const FILL_COLOR = new Color(`${BG_COLOR}`);
-const MAX_ACTIVE_COLORS = 10;
+const MAX_ACTIVE_COLORS = 2;
 
 function Grid(
     canvas,
+    blocks
 ) {
     this.canvas = canvas;
+    this.blocks = blocks;
     this.dirtyTileSet = {};
     this.blockPointer = 0;
     this.targetBlocks = [];
@@ -104,7 +105,7 @@ function Grid(
     this.selectNextBlockTarget = () => {
         if (this.blockPointer >= this.targetBlocks.length) {
             this.blockPointer = 0;
-            this.targetBlocks = getBlockFromEachSubBlock();
+            this.targetBlocks = this.blocks.getBlockFromEachSubBlock();
         }
         
         const block = this.targetBlocks[this.blockPointer];
@@ -129,7 +130,7 @@ function Grid(
     }
 
     this.isInBlock = (tileX, tileY) => {
-        const blocks = getActiveBlocks();
+        const blocks = this.blocks.getActiveBlocks();
 
         const targetXPercent = tileX / this.tilesX;
         const targetYPercent = tileY / this.tilesY;

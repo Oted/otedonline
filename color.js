@@ -1,9 +1,9 @@
-const DEFAULT_STRENGTH = 0.64;
+const DEFAULT_STRENGTH = 0.72;
 const NEGATIVE_STRENGTH_VARY = 0.1;
 const DEFAULT_LIFESPAN = 750;
 const LIFESPAN_VARY = 500;
-const STRENGTH_DECAY_RATE = 0.98;
-const STRENGTH_DECAY_RATE_VARY = 0.05;
+const STRENGTH_DECAY_RATE = 0.99;
+const NEGATIVE_STRENGTH_DECAY_RATE_VARY = 0.03;
 
 
 function Color(
@@ -14,8 +14,8 @@ function Color(
     this.value = value;
     this.strength = strength ? strength : DEFAULT_STRENGTH;
     this.lifespan = DEFAULT_LIFESPAN + ((Math.random() * LIFESPAN_VARY) - (LIFESPAN_VARY / 2));
-    this.strengthDecayRate = STRENGTH_DECAY_RATE + ((Math.random() * STRENGTH_DECAY_RATE_VARY) - (STRENGTH_DECAY_RATE_VARY / 2));
-    this.createdAt = time;
+    this.strengthDecayRate = STRENGTH_DECAY_RATE - ((Math.random() * NEGATIVE_STRENGTH_DECAY_RATE_VARY));
+    this.createdAt = time || 0;
 
     this.getEffectiveStrength = (time) => {
         const timeDiff = time - this.createdAt;
@@ -28,7 +28,7 @@ function Color(
             timeDiff
         );
 
-        return Math.max(0, effectiveStrength);
+        return effectiveStrength;
     }
 }
 
