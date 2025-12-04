@@ -23,7 +23,12 @@ function Grid(
     }, false)
 
     this.canvas.addEventListener("TileCall", (e) => {
-        this.tiles[e.detail.y][e.detail.x].pushCallToQueue(e);
+        //tiles can call outside scopes
+        try {
+            this.tiles[e.detail.y][e.detail.x].pushCallToQueue(e);
+        } catch {
+
+        }
     }, false)
 
     this.init = () => {

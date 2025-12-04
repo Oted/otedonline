@@ -1,6 +1,6 @@
 import {shuffle, isMobile} from "./utils.js";
 
-const TILE_SIZE = isMobile() ? 3 : 5;
+const TILE_SIZE = isMobile() ? 3 : 4;
 
 function Tile(
     gridX,

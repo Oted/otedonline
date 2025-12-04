@@ -22,12 +22,27 @@ body {
 #canvas {
     width: 100%;
     display: block;
-    max-width: 1200px;
 }
 
-#canvas-container {
+#container {
+    position: relative;
     width: 100%;
+    max-width: 1200px;
     flex: 1 1 auto;
+    margin: auto;
+}
+
+.hidden {
+    display: none;
+}
+
+#box {
+    position: absolute;
+    top: 12%;
+    left: 12%;
+    width: 77%;
+    height: 77%;
+    background-color: var(--nav-color);
 }
 
 #nav {
@@ -40,32 +55,28 @@ body {
     background-color: var(--nav-color);
 }
 
-
-.nav-button {
-    background-color: var(--nav-color);
-    font-family: inherit;
-    font-weight: 500;
-    font-size: 18px;
-    letter-spacing: 0.05em;
-    cursor: pointer;
-    border: none;
-    color: black;
-}
-
 #nav-home {
     font-size: 1.5rem;
+    width: 14rem;
     cursor: pointer;
-    flex: 1 1 auto;
+    flex: 0 0 auto;
 }
 
 #nav-middle {
-    flex-grow: 5;
+    flex: 1 1 0;
+    min-width: 0;
 }
 
 #nav-burger {
     cursor: pointer;
     flex: 0 0 auto;
     width: 4rem;
+}
+
+.icon:hover {
+    transform-origin: center;
+    transition: all 0.25s;
+    scale: 1.1;
 }
 
 #nav-burger > img {
@@ -84,16 +95,19 @@ body {
 }
 
 #foot-middle {
-    flex-grow: 5;
+    flex: 1 1 0;
+    min-width: 0;
 }
 
 #foot-text {
+    width: 12rem;
     font-weight: 500;
-    flex: 1 1 auto;
+    flex: 0 0 auto;
 }
 
 .foot-icon {
-    width: 4rem;
+    cursor: pointer;
+    width: 3rem;
     flex: 0 0 auto;
 }
 

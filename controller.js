@@ -3,16 +3,25 @@ function Controller(
     blocks,
     grid
 ) {
-    this.aboutButton = document.getElementById("nav-about-button");
-    this.contactButton = document.getElementById("nav-contact-button");
-    this.hereButton  = document.getElementById("nav-here-button");
+    this.hamburgerButton = document.getElementById("nav-burger");
+    this.box = document.getElementById("box");
+    this.showBox = false;
+
     this.grid = grid;
     this.blocks = blocks;
 
-    //this.aboutButton.addEventListener("click", () => {
-        //this.blocks.toggleButtonBlock();
-        //this.grid.init();
-    //})
+    this.hamburgerButton.addEventListener("click", () => {this.hamburgerClick()})
+    
+    this.hamburgerClick = () => {
+        this.showBox = !this.showBox;
+        if (this.showBox) {
+            this.box.className = "box"
+        } else {
+            this.box.className = "box hidden"
+        }
+        this.blocks.toggleButtonBlock();
+        this.grid.init();
+    }
 }
 
 export {Controller};
