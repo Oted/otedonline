@@ -1,9 +1,15 @@
 import {Grid} from "./grid.js";
+import {Controller} from "./controller.js";
+import {Blocks} from "./blocks.js";
 
 let grid;
-const tickRateMs = 7;
+
+const tickRateMs = 15;
+let ticks = 0;
 
 const tick = () => {
+    ticks++;
+
     grid.draw();
     setTimeout(() => {
         requestAnimationFrame(tick)
@@ -11,9 +17,13 @@ const tick = () => {
 }
 
 const init = () => {
-    grid = new Grid(document.getElementById("canvas"));
-    grid.resize();
+    const canvas = document.getElementById("canvas");
 
+    const blocks = new Blocks();
+    grid = new Grid(canvas, blocks);
+    new Controller(blocks, grid);
+
+    grid.init();
     tick();
 }
 
@@ -21,6 +31,6 @@ document.addEventListener("DOMContentLoaded", () => {
     init();
 });
 
-document.addEventListener("resize", () => {
-    init();
-});
+window.addEventListener("resize", () => {
+    grid.init();
+}, true);

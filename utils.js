@@ -1,3 +1,5 @@
+const MIN_WIDTH_DESKTOP_IDENTIFICATION = 768;
+
 const shuffle = (list) => {
     let i = list.length;
     while (i) {
@@ -13,4 +15,9 @@ const randomFromArray = (arr) => {
     return arr[Math.floor(Math.random() * arr.length)];
 }
 
-export {shuffle, randomFromArray};
+const isMobile = () => {
+    return window.innerWidth < MIN_WIDTH_DESKTOP_IDENTIFICATION || 
+        screen.width < MIN_WIDTH_DESKTOP_IDENTIFICATION;
+}
+
+export {shuffle, randomFromArray, isMobile};

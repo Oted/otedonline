@@ -1,5 +1,13 @@
 import {shuffle, randomFromArray} from "./utils.js";
 
+const mainButtonBlock = [
+    [0.0,0.0,1,0.1], //top
+    [0.0,0.0,0.1,1], //left
+    [0.9,0,1,1], //right
+    [0,0.9,1,1], //right
+
+]
+
 const otedO = [
     [0.12, 0.18, 0.24, 0.26], //top
     [0.10, 0.21, 0.15, 0.53], //left
@@ -63,26 +71,41 @@ const onlineE = [
     [0.78, 0.77, 0.87, 0.82], //bot
 ];
 
-const otedBlocks = otedO.concat(otedT, otedE, otedD);
-const onlineBlocks = onlineO.concat(onlineN1, onlineL, onlineI, onlineN2, onlineE);
+function Blocks() {
+    this.otedBlocks = otedO.concat(otedT, otedE, otedD);
+    this.onlineBlocks = onlineO.concat(onlineN1, onlineL, onlineI, onlineN2, onlineE);
+    this.buttonBlockActive = false;
 
-const getActiveBlocks = () => {
-    return shuffle(otedBlocks.concat(onlineBlocks));
+    this.getActiveBlocks = () => {
+        if (this.buttonBlockActive) {
+            return mainButtonBlock;
+        } 
+
+        return shuffle(this.otedBlocks.concat(this.onlineBlocks));
+    }
+
+    this.toggleButtonBlock = () => {
+        this.buttonBlockActive = !this.buttonBlockActive;
+    }
+
+    this.getBlockFromEachSubBlock = () => {
+        if (this.buttonBlockActive) {
+            return mainButtonBlock;
+        } 
+
+        return [
+            randomFromArray(otedO),
+            randomFromArray(otedT),
+            randomFromArray(otedE),
+            randomFromArray(otedD),
+            randomFromArray(onlineO),
+            randomFromArray(onlineN1),
+            randomFromArray(onlineL),
+            randomFromArray(onlineI),
+            randomFromArray(onlineN2),
+            randomFromArray(onlineE),
+        ];
+    }
 }
 
-const getBlockFromEachSubBlock = () => {
-    return [
-        randomFromArray(otedO),
-        randomFromArray(otedT),
-        randomFromArray(otedE),
-        randomFromArray(otedD),
-        randomFromArray(onlineO),
-        randomFromArray(onlineN1),
-        randomFromArray(onlineL),
-        randomFromArray(onlineI),
-        randomFromArray(onlineN2),
-        randomFromArray(onlineE),
-    ];
-}
-
-export {getActiveBlocks, getBlockFromEachSubBlock};
+export {Blocks};
