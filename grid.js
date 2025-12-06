@@ -4,7 +4,11 @@ import {randomFromArray} from "./utils.js";
 
 const BG_COLOR = getComputedStyle(document.documentElement).getPropertyValue('--bg-color');
 const FILL_COLOR = new Color(`${BG_COLOR}`);
-const MAX_ACTIVE_COLORS = 15;
+
+const DEFAULT_SETTINGS = {
+    maxActiveColors: 11,
+    colorStrength: null,
+}
 
 function Grid(
     canvas,
@@ -23,22 +27,25 @@ function Grid(
     }, false)
 
     this.canvas.addEventListener("TileCall", (e) => {
-        //tiles can call outside scopes
+        //tiles can call outside blocks and canvas
         try {
             this.tiles[e.detail.y][e.detail.x].pushCallToQueue(e);
-        } catch {
-
-        }
+        } catch {}
     }, false)
 
-    this.init = () => {
+    this.init = (settings) => {
         this.canvas.width = this.canvas.parentNode.clientWidth;
         this.canvas.height = this.canvas.parentNode.clientHeight;
         this.time = 0;
         this.dirtyTileSet = {};
         this.blockPointer = 0;
         this.targetBlocks = [];
-
+        this.settings = Object.assign(
+            {}, 
+            DEFAULT_SETTINGS,
+            settings || {}
+        )
+        
         this.tiles = Array(Math.ceil(this.canvas.height / TILE_SIZE)).fill().map((_, y) => {
             return Array(Math.ceil(this.canvas.width / TILE_SIZE)).fill().map((_, x) => {
                 return new Tile(
@@ -85,15 +92,18 @@ function Grid(
         const colorCount = Object.keys(colorCountObj).length;
         this.time++;
 
-        const maxActive = Math.min(MAX_ACTIVE_COLORS, Math.ceil(this.time / 200));
+        const maxActive = Math.min(
+            this.settings.maxActiveColors, 
+            Math.ceil(this.time / 200)
+        );
+
         if (colorCount < maxActive) {
             this.selectCandidate();
         }
     }
 
     this.selectCandidate = () => {
-        //const color = randomColor(this.time);
-        const color = pickedColor(this.time);
+        const color = pickedColor(this.time, this.settings.colorStrength);
 
         const randomTile = this.randomTileInBlock();
         const callRandomCenter = new CustomEvent("TileCall", {

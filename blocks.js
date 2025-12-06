@@ -1,11 +1,12 @@
 import {shuffle, randomFromArray} from "./utils.js";
 
 const mainButtonBlock = [
-    [0.0,0.0,1,0.1], //top
-    [0.0,0.0,0.1,1], //left
-    [0.9,0,1,1], //right
-    [0,0.9,1,1], //right
-
+    [0.0,0.0,0.5,0.33], //left top
+    [0.5,0.0,1,0.33], //right top
+    [0.0,0.33,0.5,0.66], //left mid
+    [0.5,0.33,1,0.66], //right mid
+    [0.0,0.66,0.5,1], //left bot
+    [0.5,0.6,1,1], //right bot
 ]
 
 const otedO = [

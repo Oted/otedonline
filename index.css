@@ -1,14 +1,18 @@
 :root {
     --bg-color: rgb(53, 42, 58);
     --nav-color: rgb(238, 238, 245);
+    --color-red: #C03351;
 }
 
 a {
     all: unset;
 }
 
+img {
+    max-width: 100%;
+}
+
 body {
-    gap: 1rem;
     background-color: var(--bg-color);
     font-family: "JetBrains Mono", monospace;
     padding: 0;
@@ -33,31 +37,94 @@ body {
 }
 
 .hidden {
-    display: none;
+    height:0px !important;
+    top: -100% !important;
+}
+
+#box-content {
+    overflow: auto ;
+    max-height: 100%;
+    overscroll-behavior: contain ;
+}
+
+#content-about {
+    display: flex;
+    flex-flow: column;
+    text-align: center;
+    max-width: 900px;
+    width: 95%;
+    margin: auto;
+}
+
+.highlight-word {
+    color: var(--color-red);
+    font-weight: 800;
+}
+
+.separator {
+    border-bottom: solid var(--bg-color);
+    width: 70%;
+    margin: 1rem auto;
+}
+
+.about-image {
+    width: 10rem;
+    margin: auto;
 }
 
 #box {
+    gap: 1rem;
+    display: flex;
+    flex-flow: column;
+    transition: all 0.75s;
     position: absolute;
-    top: 12%;
-    left: 12%;
-    width: 77%;
-    height: 77%;
+    left:2.5%;
+    top: 5%;
+    width: 95%;
+    height: 90%;
     background-color: var(--nav-color);
+    opacity: 0.96;
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
+}
+
+#box-nav {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    height: 4rem;
+    width: 100%;
+    background-color: #191718;
+}
+
+.box-nav-button {
+    cursor: pointer;
+    color: var(--nav-color);
+    flex: 1 1 auto;
+}
+
+.active {
+    transform-origin: center;
+    transition: all 0.5s;
+    scale: 1.2;
+    color: var(--color-red);
+}
+
+#box-content {
 }
 
 #nav {
+    display: flex;
     text-align: center;
     align-items: center;
-    flex-flow: row;
-    display: flex;
     height: 4rem;
     width: 100%;
     background-color: var(--nav-color);
 }
 
 #nav-home {
-    font-size: 1.5rem;
-    width: 14rem;
+    font-size: 1.25rem;
+    font-style: italic;
+    width: 12rem;
     cursor: pointer;
     flex: 0 0 auto;
 }
