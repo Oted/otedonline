@@ -1,39 +1,34 @@
-import {Tile, TILE_SIZE} from "./tile.js";
+import {Tile} from "./tile.js";
 import {Color, randomColor, pickedColor} from "./color.js";
-import {randomFromArray} from "./utils.js";
+import {randomFromArray, isMobile} from "./utils.js";
 
 const BG_COLOR = getComputedStyle(document.documentElement).getPropertyValue('--bg-color');
-const FILL_COLOR = new Color(`${BG_COLOR}`);
+const FILL_COLOR = new Color(`${BG_COLOR}`, 0);
+
+const TILE_SIZE = isMobile() ? 3 : 4;
 
 const DEFAULT_SETTINGS = {
-    maxActiveColors: 11,
+    maxActiveColors: 12,
     colorStrength: null,
 }
 
-function Grid(
-    canvas,
-    blocks
-) {
-    this.canvas = canvas;
-    this.blocks = blocks;
-    this.dirtyTileSet = {};
-    this.blockPointer = 0;
-    this.targetBlocks = [];
-    this.time = 0;
+export class Grid {
+    constructor(canvas, blocks, eventBus) {
+        this.canvas = canvas;
+        this.blocks = blocks;
+        this.dirtyTileSet = {};
+        this.blockPointer = 0;
+        this.targetBlocks = [];
+        this.eventBus = eventBus;
+        this.time = 0;
 
-    this.canvas.addEventListener("DirtyTile", (e) => {
-        const t = this.tiles[e.detail.y][e.detail.x];
-        this.dirtyTileSet[t.id] = t;
-    }, false)
+        this.eventBus.subscribeDirtyTile((data) => {
+            const t = this.tiles[data.y][data.x];
+            this.dirtyTileSet[t.id] = t;
+        });
+    }
 
-    this.canvas.addEventListener("TileCall", (e) => {
-        //tiles can call outside blocks and canvas
-        try {
-            this.tiles[e.detail.y][e.detail.x].pushCallToQueue(e);
-        } catch {}
-    }, false)
-
-    this.init = (settings) => {
+    init(settings) {
         this.canvas.width = this.canvas.parentNode.clientWidth;
         this.canvas.height = this.canvas.parentNode.clientHeight;
         this.time = 0;
@@ -45,16 +40,24 @@ function Grid(
             DEFAULT_SETTINGS,
             settings || {}
         )
+
+        //unsub all prev subscribers
+        this.eventBus.unsubscribeAllTileCall()
         
         this.tiles = Array(Math.ceil(this.canvas.height / TILE_SIZE)).fill().map((_, y) => {
             return Array(Math.ceil(this.canvas.width / TILE_SIZE)).fill().map((_, x) => {
+                const canvasX = x * TILE_SIZE;
+                const canvasY = y * TILE_SIZE;
+
                 return new Tile(
+                    this.eventBus,
                     x,
                     y,
-                    x * TILE_SIZE,
-                    y * TILE_SIZE,
+                    canvasX,
+                    canvasY,
                     this.canvas,
-                    FILL_COLOR
+                    FILL_COLOR,
+                    TILE_SIZE,
                 );
             })
         })
@@ -63,7 +66,7 @@ function Grid(
         this.tilesY = this.tiles.length;
     }
 
-    this.draw = () => {
+    draw() {
         let colorCountObj = {};
 
         for (const tileId in this.dirtyTileSet) {
@@ -78,11 +81,11 @@ function Grid(
 
             t.draw(this.time);
 
-            if (t.color.value !== FILL_COLOR.value) {
-                if (colorCountObj[t.color.value]) {
-                    colorCountObj[t.color.value] = colorCountObj[t.color.value] + 1;
+            if (t.color.id !== FILL_COLOR.id) {
+                if (colorCountObj[t.color.id]) {
+                    colorCountObj[t.color.id] = colorCountObj[t.color.id] + 1;
                 } else {
-                    colorCountObj[t.color.value] = 1;
+                    colorCountObj[t.color.id] = 1;
                 }
             }
 
@@ -102,24 +105,22 @@ function Grid(
         }
     }
 
-    this.selectCandidate = () => {
+    selectCandidate() {
         const color = pickedColor(this.time, this.settings.colorStrength);
 
         const randomTile = this.randomTileInBlock();
-        const callRandomCenter = new CustomEvent("TileCall", {
-            detail: {
-                x: randomTile.gridX,
-                y: randomTile.gridY,
-                color: color,
-                time: this.time,
-                newSpawn: true
-            }
-        });
+        const eventData = {
+            x: randomTile.gridX,
+            y: randomTile.gridY,
+            color: color,
+            time: this.time,
+            newSpawn: true
+        };
 
-       this.canvas.dispatchEvent(callRandomCenter);
+        this.eventBus.publishTileCall(`${eventData.x}-${eventData.y}`, eventData);
     }
 
-    this.selectNextBlockTarget = () => {
+    selectNextBlockTarget() {
         if (this.blockPointer >= this.targetBlocks.length) {
             this.blockPointer = 0;
             this.targetBlocks = this.blocks.getBlockFromEachSubBlock();
@@ -130,7 +131,7 @@ function Grid(
         return block;
     }
 
-    this.randomTileInBlock = () => {
+    randomTileInBlock() {
         const selectedBlock = this.selectNextBlockTarget();
 
         const startXPercent = selectedBlock[0];
@@ -143,10 +144,11 @@ function Grid(
 
         const targetTileX = Math.floor(randomTileXPercent * this.tilesX);
         const targetTileY = Math.floor(randomTileYPercent * this.tilesY);
+
         return this.tiles[targetTileY][targetTileX];
     }
 
-    this.isInBlock = (tileX, tileY) => {
+    isInBlock(tileX, tileY) {
         const blocks = this.blocks.getActiveBlocks();
 
         const targetXPercent = tileX / this.tilesX;
@@ -165,5 +167,3 @@ function Grid(
         return false;
     }
 }
-
-export {Grid};
