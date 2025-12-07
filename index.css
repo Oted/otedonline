@@ -42,9 +42,10 @@ body {
 }
 
 #box-content {
-    overflow: auto ;
+    padding: 0 1rem;
+    overflow: auto;
     max-height: 100%;
-    overscroll-behavior: contain ;
+    overscroll-behavior: contain;
 }
 
 #content-about {
@@ -52,7 +53,6 @@ body {
     flex-flow: column;
     text-align: center;
     max-width: 900px;
-    width: 95%;
     margin: auto;
 }
 
@@ -79,21 +79,17 @@ body {
     transition: all 0.75s;
     position: absolute;
     left:2.5%;
-    top: 5%;
+    top: 2.55%;
     width: 95%;
-    height: 90%;
+    height: 95%;
     background-color: var(--nav-color);
-    opacity: 0.96;
+    opacity: 0.92;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
 }
 
 #box-nav {
-    display: flex;
-    text-align: center;
-    align-items: center;
-    height: 4rem;
-    width: 100%;
     background-color: #191718;
+    height: 6rem;
 }
 
 .box-nav-button {
@@ -109,16 +105,16 @@ body {
     color: var(--color-red);
 }
 
-#box-content {
-}
-
-#nav {
+.nav {
     display: flex;
     text-align: center;
     align-items: center;
     height: 4rem;
     width: 100%;
-    background-color: var(--nav-color);
+}
+
+#header-nav {
+   background-color: var(--nav-color);
 }
 
 #nav-home {

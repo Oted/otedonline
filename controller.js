@@ -24,6 +24,7 @@ function Controller(
             this.box.className = "box hidden"
             this.grid.init();
         }
+
         this.blocks.toggleButtonBlock();
     }
 }
