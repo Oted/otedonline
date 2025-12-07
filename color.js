@@ -1,4 +1,4 @@
-const DEFAULT_STRENGTH = 0.72;
+const DEFAULT_STRENGTH = 0.6;
 const NEGATIVE_STRENGTH_VARY = 0.1;
 const DEFAULT_LIFESPAN = 750;
 const LIFESPAN_VARY = 500;
@@ -54,11 +54,11 @@ const randomColor = (time)  => {
     )
 }
 
-const pickedColor = (time) => {
+const pickedColor = (time, colorStrength) => {
     const pick = COLOR_PICK_ALTERNATIVES[Math.floor(Math.random() * COLOR_PICK_ALTERNATIVES.length)]
     return new Color(
         `${pick}`,
-        DEFAULT_STRENGTH - ((Math.random() * NEGATIVE_STRENGTH_VARY)),
+        colorStrength ||  (DEFAULT_STRENGTH - ((Math.random() * NEGATIVE_STRENGTH_VARY))),
         time
     )
 }
