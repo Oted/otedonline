@@ -19,7 +19,7 @@ export class Controller {
         this.showBox = !this.showBox;
         if (this.showBox) {
             this.box.className = "box"
-            this.grid.init({colorStrength: 0.6, maxActiveColors: 3});
+            this.grid.init({colorStrength: 0.5, maxActiveColors: 10});
         } else {
             this.box.className = "box hidden"
             this.grid.init();

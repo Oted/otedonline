@@ -3,7 +3,7 @@ import {Color, randomColor, pickedColor} from "./color.js";
 import {randomFromArray, isMobile} from "./utils.js";
 
 const BG_COLOR = getComputedStyle(document.documentElement).getPropertyValue('--bg-color');
-const FILL_COLOR = new Color(`${BG_COLOR}`);
+const FILL_COLOR = new Color(`${BG_COLOR}`, 0);
 
 const TILE_SIZE = isMobile() ? 3 : 4;
 
