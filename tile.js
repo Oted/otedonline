@@ -2,14 +2,16 @@ import {shuffle} from "./utils.js";
 
 export class Tile{
     constructor(
+        eventBus,
         gridX,
         gridY,
         canvasX,
         canvasY,
         canvas,
         color,
-        tileSize
+        tileSize,
     ) {
+        this.eventBus = eventBus;
         this.prevColor = null;
         this.gridX = gridX;
         this.gridY = gridY;
@@ -22,9 +24,13 @@ export class Tile{
         this.isInBlock = false;
         this.id = `${gridX}-${gridY}`;
         this.tileSize = tileSize;
+
+        this.eventBus.subscribeTileCall(this.id, (data) => {
+            this.pushCallToQueue(data);
+        });
     }
 
-    draw = (time) => {
+    draw(time) {
         if (this.waitingCall && this.waitingCall.time === time) {
             this.answerCall(time);
         }
@@ -35,7 +41,7 @@ export class Tile{
         }
     }
 
-    answerCall = (time) => {
+    answerCall(time) {
         if (this.shouldChange(time)) {
             this.setColor(this.waitingCall.color);
         }
@@ -44,65 +50,50 @@ export class Tile{
         this.waitingCall = null;
     }
 
-    handleCallPropagation = (time, newSpawn) => {
-        const eventNorth = new CustomEvent("TileCall", {
-            detail: {
-                x: this.gridX,
-                y: this.gridY - 1,
-                color: this.color,
-                time: time + 1
-            }
-        });
-        const eventSouth = new CustomEvent("TileCall", {
-            detail: {
-                x: this.gridX,
-                y: this.gridY + 1,
-                color: this.color,
-                time: time + 1
-            }
-        });
-        const eventEast = new CustomEvent("TileCall", {
-            detail: {
-                x: this.gridX + 1,
-                y: this.gridY,
-                color: this.color,
-                time: time + 1
-            }
-        });
-        const eventWest = new CustomEvent("TileCall", {
-            detail: {
-                x: this.gridX - 1,
-                y: this.gridY,
-                color: this.color,
-                time: time + 1
-            }
-        });
+    handleCallPropagation(time, newSpawn) {
+        const eventNorth = {
+            x: this.gridX,
+            y: this.gridY - 1,
+            color: this.color,
+            time: time + 1
+        }
+        const eventSouth = {
+            x: this.gridX,
+            y: this.gridY + 1,
+            color: this.color,
+            time: time + 1
+        };
+        const eventEast = {
+            x: this.gridX + 1,
+            y: this.gridY,
+            color: this.color,
+            time: time + 1
+        };
+        const eventWest = {
+            x: this.gridX - 1,
+            y: this.gridY,
+            color: this.color,
+            time: time + 1
+        };
 
         const events = shuffle([eventEast, eventWest, eventNorth, eventSouth]);
         const effectiveStrength = this.color.getEffectiveStrength(time);
 
         if (newSpawn) {
             events.forEach(e => {
-                this.canvas.dispatchEvent(e);
+                const address = `${e.x}-${e.y}`;
+                this.eventBus.publishTileCall(address, e)
             })
         } else if (this.isInBlock) {
             const thresh = Math.min(1, effectiveStrength);
             events.forEach(e => {
-                Math.random() < thresh ? this.canvas.dispatchEvent(e) : null;
+                const address = `${e.x}-${e.y}`;
+                Math.random() < thresh ? this.eventBus.publishTileCall(address, e) : null;
             })
         } 
     }
 
-    dispatchDirtyTile = () => {
-        this.canvas.dispatchEvent(new CustomEvent("DirtyTile", {
-            detail: {
-                x: this.gridX,
-                y: this.gridY
-            }
-        }));
-   }
-
-    shouldChange = (time) => {
+    shouldChange(time) {
         const currentStrength = this.color.getEffectiveStrength(time);
 
         let shouldChange = this.waitingCall.color.value !== this.color.value ||
@@ -111,25 +102,28 @@ export class Tile{
         return shouldChange;
     }
 
-    pushCallToQueue = (e) => {
-        this.waitingCall = e.detail;
+    pushCallToQueue(event) {
+        this.waitingCall = event;
 
-        if (this.shouldChange(e.detail.time)) {
-            this.dispatchDirtyTile();
+        if (this.shouldChange(event.time)) {
+            this.eventBus.publishDirtyTile({
+                x: this.gridX,
+                y: this.gridY,
+            })
         }
     }
 
-    fill = () => {
+    fill() {
         this.context.fillStyle = this.color.value;
         this.context.fillRect(this.canvasX, this.canvasY, this.tileSize, this.tileSize);
     }
 
-    drawBorder = () => {
-       this.context.strokeStyle = "rgba(0,0,0,.0)";
+    drawBorder() {
+       this.context.strokeStyle = "rgba(0,0,0,.1)";
        this.context.strokeRect(this.canvasX - 1, this.canvasY - 1, this.tileSize + 1, this.tileSize + 1);
     }
 
-    setColor = (color) => {
+    setColor(color) {
         this.prevColor = this.color;
         this.color = color;
     }

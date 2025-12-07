@@ -79,7 +79,7 @@ export class Blocks {
         this.buttonBlockActive = false;
     }
 
-    getActiveBlocks = () => {
+    getActiveBlocks() {
         if (this.buttonBlockActive) {
             return mainButtonBlock;
         } 
@@ -87,11 +87,11 @@ export class Blocks {
         return shuffle(this.otedBlocks.concat(this.onlineBlocks));
     }
 
-    toggleButtonBlock = () => {
+    toggleButtonBlock() {
         this.buttonBlockActive = !this.buttonBlockActive;
     }
 
-    getBlockFromEachSubBlock = () => {
+    getBlockFromEachSubBlock() {
         if (this.buttonBlockActive) {
             return mainButtonBlock;
         } 
