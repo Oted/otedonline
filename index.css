@@ -2,6 +2,7 @@
     --bg-color: rgb(53, 42, 58);
     --nav-color: rgb(238, 238, 245);
     --color-red: #C03351;
+    --color-blue: #51618E;
 }
 
 a {
@@ -56,6 +57,13 @@ body {
     margin: auto;
 }
 
+.link {
+    cursor: pointer; 
+    color: var(--color-blue);
+    font-weight: 800;
+}
+
+
 .highlight-word {
     color: var(--color-red);
     font-weight: 800;
@@ -83,7 +91,7 @@ body {
     width: 95%;
     height: 95%;
     background-color: var(--nav-color);
-    opacity: 0.97;
+    opacity: 0.94;
     box-shadow: rgba(50, 50, 93, 0.25) 0px 30px 60px -12px inset, rgba(0, 0, 0, 0.3) 0px 18px 36px -18px inset;
 }
 

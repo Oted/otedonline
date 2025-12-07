@@ -20,11 +20,11 @@ export class Controller {
         if (this.showBox) {
             this.box.className = "box"
             this.grid.init({colorStrength: 0.5, maxActiveColors: 10});
+            this.blocks.toggleButtonBlock();
         } else {
             this.box.className = "box hidden"
-            this.grid.init();
+            //this.grid.init();
         }
 
-        this.blocks.toggleButtonBlock();
     }
 }

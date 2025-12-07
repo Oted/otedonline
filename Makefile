@@ -4,7 +4,7 @@ export
 .PHONY: develop deploy
 
 develop:
-	http-server -c-1 -p 8080
+	http-server -c-1 -p 8080 .
 
 deploy:
-	rsync -av --exclude '*/' . ubuntu@${DEPLOY_IP}:/var/www/html/oted.online
+	rsync -av  --include "assets/" --include "assets/***" --exclude '*/' . ubuntu@${DEPLOY_IP}:/var/www/html/oted.online
