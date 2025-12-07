@@ -72,12 +72,14 @@ const onlineE = [
     [0.78, 0.77, 0.87, 0.82], //bot
 ];
 
-function Blocks() {
-    this.otedBlocks = otedO.concat(otedT, otedE, otedD);
-    this.onlineBlocks = onlineO.concat(onlineN1, onlineL, onlineI, onlineN2, onlineE);
-    this.buttonBlockActive = false;
+export class Blocks {
+    constructor() {
+        this.otedBlocks = otedO.concat(otedT, otedE, otedD);
+        this.onlineBlocks = onlineO.concat(onlineN1, onlineL, onlineI, onlineN2, onlineE);
+        this.buttonBlockActive = false;
+    }
 
-    this.getActiveBlocks = () => {
+    getActiveBlocks = () => {
         if (this.buttonBlockActive) {
             return mainButtonBlock;
         } 
@@ -85,11 +87,11 @@ function Blocks() {
         return shuffle(this.otedBlocks.concat(this.onlineBlocks));
     }
 
-    this.toggleButtonBlock = () => {
+    toggleButtonBlock = () => {
         this.buttonBlockActive = !this.buttonBlockActive;
     }
 
-    this.getBlockFromEachSubBlock = () => {
+    getBlockFromEachSubBlock = () => {
         if (this.buttonBlockActive) {
             return mainButtonBlock;
         } 
@@ -108,5 +110,3 @@ function Blocks() {
         ];
     }
 }
-
-export {Blocks};
