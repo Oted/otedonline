@@ -35,7 +35,7 @@ export class Tile{
             this.answerCall(time);
         }
 
-        if (this.prevColor?.value !== this.color?.value) {
+        if (this.prevColor?.id !== this.color?.id) {
             this.fill();
         }
     }
@@ -89,7 +89,7 @@ export class Tile{
                 const address = `${e.x}-${e.y}`;
                 if (Math.random() < thresh) {
                    this.eventBus.publishTileCall(address, e)
-                } else {
+                } else if (this.prevColor.id !== this.color.id) {
                     //end borders on no spread
 
                     this.context.strokeStyle = "rgba(0,0,0,.4)";
@@ -120,7 +120,7 @@ export class Tile{
     shouldChange(time) {
         const currentStrength = this.color.getEffectiveStrength(time);
 
-        let shouldChange = this.waitingCall.color.value !== this.color.value ||
+        let shouldChange = this.waitingCall.color.id !== this.color.id ||
             this.waitingCall.color.strength > currentStrength;
 
         return shouldChange;
