@@ -5,7 +5,7 @@ import {randomFromArray, isMobile} from "./utils.js";
 const BG_COLOR = getComputedStyle(document.documentElement).getPropertyValue('--bg-color');
 const FILL_COLOR = new Color(`${BG_COLOR}`, 0);
 
-const TILE_SIZE = isMobile() ? 2 : 4;
+const TILE_SIZE = isMobile() ? 2 : 3;
 
 const DEFAULT_SETTINGS = {
     maxActiveColors: 12,
