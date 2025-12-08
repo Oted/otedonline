@@ -36,7 +36,6 @@ export class Tile{
         }
 
         if (this.prevColor?.value !== this.color?.value) {
-            this.drawBorder();
             this.fill();
         }
     }
@@ -88,7 +87,31 @@ export class Tile{
             const thresh = Math.min(1, effectiveStrength);
             events.forEach(e => {
                 const address = `${e.x}-${e.y}`;
-                Math.random() < thresh ? this.eventBus.publishTileCall(address, e) : null;
+                if (Math.random() < thresh) {
+                   this.eventBus.publishTileCall(address, e)
+                } else {
+                    //end borders on no spread
+                    this.context.strokeStyle = "rgba(0,0,0,.4)";
+                    //north
+                    if (e.x === this.gridX && e.y < this.gridY) {
+                        this.context.strokeRect(this.canvasX, this.canvasY, this.tileSize, 1);
+                    }
+
+                    //south
+                    if (e.x === this.gridX && e.y > this.gridY) {
+                        this.context.strokeRect(this.canvasX, this.canvasY + this.tileSize - 1, this.tileSize, 1);
+                    }
+
+                    //west
+                    if (e.x < this.gridX && e.y === this.gridY) {
+                        this.context.strokeRect(this.canvasX, this.canvasY, 1, this.tileSize);
+                    }
+
+                    //east
+                    if (e.x > this.gridX && e.y === this.gridY) {
+                        this.context.strokeRect(this.canvasX + this.tileSize - 1, this.canvasY, 1, this.tileSize);
+                    }
+                }
             })
         } 
     }
@@ -116,11 +139,6 @@ export class Tile{
     fill() {
         this.context.fillStyle = this.color.value;
         this.context.fillRect(this.canvasX, this.canvasY, this.tileSize, this.tileSize);
-    }
-
-    drawBorder() {
-       this.context.strokeStyle = "rgba(0,0,0,.1)";
-       this.context.strokeRect(this.canvasX - 1, this.canvasY - 1, this.tileSize + 1, this.tileSize + 1);
     }
 
     setColor(color) {

@@ -97,7 +97,7 @@ export class Grid {
 
         const maxActive = Math.min(
             this.settings.maxActiveColors, 
-            Math.ceil(this.time / 200)
+            Math.ceil(this.time / 100)
         );
 
         if (colorCount < maxActive) {
