@@ -1,91 +1,140 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <link rel="manifest" href="manifest.json">
+  <head>
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Oted Online">
+    <meta name="apple-mobile-web-app-title" content="Oted Online">
+    <meta name="msapplication-starturl" content="/">
 
-        <meta name="mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="application-name" content="Oted Online">
-        <meta name="apple-mobile-web-app-title" content="Oted Online">
-        <meta name="msapplication-starturl" content="/">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Personal website of Olle Andreasson, Creative Staff Engineer based in Gothenburg.">
+    <meta name="keywords" content="Oted, Olle Andreasson, Creative Staff Engineer, Portfolio, Gothenburg, Oted Online">
+    <meta name="author" content="Olle Andreasson">
 
-        <title>oted online</title>
-        <meta name="description" content="A base onine">
-        <script type="module" src="index.js"></script>
-        <link rel="stylesheet" href="index.css">
-    </head>
-    <body>
-        <div class="nav" id="header-nav">
-            <div id="nav-home">
-                <a href="https://oted.online/"> ://oted.online </a>
-            </div>
-            <div id="nav-middle"></div>
-            <div id="nav-burger">
-                <img class="icon" src="./assets/burger.svg"/>
-            </div>
+    <meta property="og:title" content="Oted Online – Olle Andreasson">
+    <meta property="og:description" content="Personal website of Olle Andreasson, Creative Staff Engineer based in Gothenburg.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://oted.online/">
+    <meta property="og:image" content="https://oted.online/assets/preview.png">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Oted Online – Olle Andreasson">
+    <meta name="twitter:description" content="Personal website of Olle Andreasson, Creative Staff Engineer based in Gothenburg.">
+    <meta name="twitter:image" content="https://oted.online/assets/preview.png">
+    <meta name="twitter:creator" content="@herrolle">
+
+    <meta name="robots" content="index, follow">
+
+    <link rel="canonical" href="https://oted.online/">
+
+    <link rel="icon" href="/assets/favicon.ico" sizes="any">
+    <link rel="apple-touch-icon" href="/assets/favicon.ico">
+
+    <title>Oted Online – A personal website for Olle Andreasson</title>
+
+    <script type="module" src="index.js"></script>
+    <link rel="stylesheet" href="index.css">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Olle Andreasson",
+      "alternateName": "Oted",
+      "url": "https://oted.online/",
+      "image": "https://oted.online/assets/me_1-min.png",
+      "jobTitle": "Creative Staff Engineer",
+      "sameAs": [
+        "https://www.linkedin.com/in/olleandreasson/",
+        "https://github.com/Oted",
+        "https://www.youtube.com/@Oteds",
+        "https://x.com/herrolle"
+      ]
+    }
+    </script>
+  </head>
+  <body>
+    <div class="nav" id="header-nav">
+      <div id="nav-home">
+        <a href="https://oted.online/"> ://oted.online </a>
+      </div>
+      <div id="nav-middle"></div>
+      <div id="nav-burger">
+        <img class="icon" src="./assets/burger.svg" alt="Menu" />
+      </div>
+    </div>
+
+    <div id="container">
+      <div class="hidden" id="box">
+        <div class="nav" id="box-nav">
+          <div id="about-button" class="box-nav-button active">
+            <span> about </span>
+          </div>
+          <div id="journey-button" class="box-nav-button">
+            <span> journey </span>
+          </div>
+          <div id="projects-button" class="box-nav-button">
+            <span> projects </span>
+          </div>
+          <div id="context-button" class="box-nav-button">
+            <span> contact </span>
+          </div>
         </div>
-        <div id="container">
-            <div class="hidden" id="box">
-                <div class="nav" id="box-nav">
-                    <div id="about-button" class="box-nav-button active">
-                       <span> about </span>
-                    </div>
-                    <div id="journey-button" class="box-nav-button">
-                       <span> journey </span>
-                    </div>
-                    <div id="projects-button" class="box-nav-button">
-                        <span> projects </span>
-                    </div>
-                    <div id="context-button" class="box-nav-button">
-                        <span> contact </span>
-                    </div>
-                </div>
-                <div id="box-content">
-                    <div id="content-about">
-                        <div class="about-image">
-                            <img src="./assets/me_1-min.png"/>
-                        </div>
-                        <h1> Olle Andreasson </h1>
-                        <span class="highlight-word"> Creative Engineer </span>
-                        <div class="separator"></div>
-                        <p> I am currently employed as a Staff Engineer located in Gothenburg but working remotely. I have over 10 years of experience in startups, consulting and large enterprises across Scotland, Germany and Sweden. </p>
-                        <p> When I applied to University of Gothenburg in the spring of 2010 I was torn, because at the same time I also applied for an acting school a bit outside the city. Two completely different paths in life, one creative path and one rational (in a dual sense). As you might understand, I chose the latter. </p>
-                        <p> Luckily, the route we take professionally has no real imprint on what we really are. That's why I call myself a Creative Engineer, and that's something I try to show with this website which I wrote during my parental leave in 2025 in <span class="highlight-word">native JavaScript </span> (I am so over modern web development). </p>
-                        <div class="separator"></div>
-                        <span class="highlight-word"> Oted Online </span>
-                        <p> The algorithm running in the canvas is similar to <span class="highlight-word"> Conway's Game of Life </span> with some personal adjustments. The architecture is event-driven where one tile can call its neighbours limited by a declining strength of the color it contains. It's mainly event-driven because I found the approach suitable to enable Tiles to talk to each other and its parent node. Check it out on <a class="link" href="https://github.com/Oted/otedonline" target="_blank"> GitHub! </a> </p>
-                        <div class="separator"></div>
-                    </div>
-                </div>
+
+        <div id="box-content">
+          <div id="content-about">
+            <div class="about-image">
+              <img src="./assets/me_1-min.png" alt="Portrait of Olle Andreasson" />
             </div>
-            <canvas id="canvas"></canvas>
+            <h1>Olle Andreasson</h1>
+            <span class="highlight-word"> Creative Engineer </span>
+            <div class="separator"></div>
+
+            <p>I am currently employed as a Staff Engineer located in Gothenburg but working remotely. I have over 10 years of experience in startups, consulting and large enterprises across Scotland, Germany and Sweden.</p>
+
+            <p>When I applied to University of Gothenburg in the spring of 2010 I was torn, because at the same time I also applied for an acting school a bit outside the city. Two completely different paths in life, one creative path and one rational (in a dual sense). As you might understand, I chose the latter.</p>
+
+            <p>Luckily, the route we take professionally has no real imprint on what we really are. That's why I call myself a Creative Engineer, and that's something I try to show with this website which I wrote during my parental leave in 2025 in <span class="highlight-word">native JavaScript</span> (I am so over modern web development).</p>
+
+            <div class="separator"></div>
+            <span class="highlight-word">Oted Online</span>
+            <p>The algorithm running in the canvas is similar to <span class="highlight-word">Conway's Game of Life</span> with some personal adjustments. The architecture is event-driven where one tile can call its neighbours limited by a declining strength of the color it contains. It's mainly event-driven because I found the approach suitable to enable Tiles to talk to each other and its parent node. Check it out on <a class="link" href="https://github.com/Oted/otedonline" target="_blank" rel="noopener">GitHub!</a></p>
+
+            <div class="separator"></div>
+          </div>
         </div>
-        <div id="foot">
-            <div id="foot-text">
-                <span> Olle Andreasson © 2026 </span>
-            </div>
-            <div id="foot-middle"></div>
-            <div class="foot-icon">
-                <a href="https://www.linkedin.com/in/olleandreasson/" target="_blank">
-                    <img class="icon" src="./assets/linkedin.svg"/>
-                </a>
-            </div>
-            <div class="foot-icon">
-                <a href="https://github.com/Oted" target="_blank">
-                    <img class="icon" src="./assets/github.svg"/>
-                </a>
-            </div>
-            <div class="foot-icon">
-                <a href="https://www.youtube.com/@Oteds" target="_blank">
-                    <img class="icon" src="./assets/youtube.svg"/>
-                </a>
-            </div>
-             <div class="foot-icon">
-                <a href="https://x.com/herrolle" target="_blank">
-                    <img class="icon" src="./assets/twitter.svg"/>
-                </a>
-            </div>
-        </div>
-   </body>
+      </div>
+
+      <canvas id="canvas"></canvas>
+    </div>
+
+    <div id="foot">
+      <div id="foot-text">
+        <span>Olle Andreasson © 2026</span>
+      </div>
+      <div id="foot-middle"></div>
+      <div class="foot-icon">
+        <a href="https://www.linkedin.com/in/olleandreasson/" target="_blank" rel="noopener">
+          <img class="icon" src="./assets/linkedin.svg" alt="LinkedIn" />
+        </a>
+      </div>
+      <div class="foot-icon">
+        <a href="https://github.com/Oted" target="_blank" rel="noopener">
+          <img class="icon" src="./assets/github.svg" alt="GitHub" />
+        </a>
+      </div>
+      <div class="foot-icon">
+        <a href="https://www.youtube.com/@Oteds" target="_blank" rel="noopener">
+          <img class="icon" src="./assets/youtube.svg" alt="YouTube" />
+        </a>
+      </div>
+      <div class="foot-icon">
+        <a href="https://x.com/herrolle" target="_blank" rel="noopener">
+          <img class="icon" src="./assets/twitter.svg" alt="Twitter/X" />
+        </a>
+      </div>
+    </div>
+  </body>
 </html>

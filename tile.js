@@ -91,6 +91,7 @@ export class Tile{
                    this.eventBus.publishTileCall(address, e)
                 } else {
                     //end borders on no spread
+
                     this.context.strokeStyle = "rgba(0,0,0,.4)";
                     //north
                     if (e.x === this.gridX && e.y < this.gridY) {
