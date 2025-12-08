@@ -1,93 +1,220 @@
 <!doctype html>
 <html lang="en">
-    <head>
-        <link rel="manifest" href="manifest.json">
+  <head>
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Oted Online">
+    <meta name="apple-mobile-web-app-title" content="Oted Online">
+    <meta name="msapplication-starturl" content="/">
 
-        <meta name="mobile-web-app-capable" content="yes">
-        <meta name="apple-mobile-web-app-capable" content="yes">
-        <meta name="application-name" content="Oted Online">
-        <meta name="apple-mobile-web-app-title" content="Oted Online">
-        <meta name="msapplication-starturl" content="/">
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Personal website of Olle Andreasson, Creative Engineer based in Gothenburg.">
+    <meta name="keywords" content="Oted, Olle Andreasson, Creative Engineer, Portfolio, Gothenburg, Oted Online">
+    <meta name="author" content="Olle Andreasson">
 
-        <title>oted online</title>
-        <meta name="description" content="A base onine">
-        <script type="module" src="index.js"></script>
-        <link rel="stylesheet" href="index.css">
-    </head>
-    <body>
-        <div class="nav" id="header-nav">
-            <div id="nav-home"> 
-                <a href="https://oted.online/"> ://oted.online </a>
-            </div>
-            <div id="nav-middle"></div>
-            <div id="nav-burger">
-                <img class="icon" src="./burger.svg"/>
-            </div>
+    <meta property="og:title" content="Oted Online – Olle Andreasson">
+    <meta property="og:description" content="Personal website of Olle Andreasson, Creative Engineer based in Gothenburg.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://oted.online/">
+    <meta property="og:image" content="https://oted.online/assets/preview.png">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Oted Online – Olle Andreasson">
+    <meta name="twitter:description" content="Personal website of Olle Andreasson, Creative Engineer based in Gothenburg.">
+    <meta name="twitter:image" content="https://oted.online/assets/preview.png">
+    <meta name="twitter:creator" content="@herrolle">
+
+    <meta name="robots" content="index, follow">
+
+    <link rel="canonical" href="https://oted.online/">
+
+    <link rel="icon" href="/assets/favicon.ico" sizes="any">
+    <link rel="apple-touch-icon" href="/assets/favicon.ico">
+
+    <title>Oted Online – A personal website for Olle Andreasson</title>
+
+    <script type="module" src="index.js"></script>
+    <link rel="stylesheet" href="index.css">
+
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Olle Andreasson",
+      "alternateName": "Oted",
+      "url": "https://oted.online/",
+      "image": "https://oted.online/assets/me_1-min.png",
+      "jobTitle": "Creative Engineer",
+      "sameAs": [
+        "https://www.linkedin.com/in/olleandreasson/",
+        "https://github.com/Oted",
+        "https://www.youtube.com/@Oteds",
+        "https://x.com/herrolle"
+      ]
+    }
+    </script>
+  </head>
+  <body>
+    <div class="nav" id="header-nav">
+      <div id="nav-home">
+        <a href="https://oted.online/"> ://oted.online </a>
+      </div>
+      <div id="nav-middle"></div>
+      <div id="nav-burger">
+        <img class="icon" src="./assets/burger.svg" alt="Menu" />
+      </div>
+    </div>
+
+    <div id="container">
+      <div class="hidden" id="box">
+        <div class="nav" id="box-nav">
+          <div tab="about" id="about-button" class="box-nav-button active">
+            <span> about </span>
+          </div>
+          <div tab="journey" id="journey-button" class="box-nav-button">
+            <span> journey </span>
+          </div>
+          <div tab="projects" id="projects-button" class="box-nav-button">
+            <span> projects </span>
+          </div>
+          <div tab="contact" id="contact-button" class="box-nav-button">
+            <span> contact </span>
+          </div>
         </div>
-        <div id="container">
-            <div class="hidden" id="box">
-                <div class="nav" id="box-nav">
-                    <div id="about-button" class="box-nav-button active">
-                       <span> about </span>
-                    </div> 
-                    <div id="journey-button" class="box-nav-button">
-                       <span> journey </span> 
-                    </div> 
-                    <div id="projects-button" class="box-nav-button">
-                        <span> projects </span> 
-                    </div> 
-                    <div id="context-button" class="box-nav-button">
-                        <span> contact </span> 
-                    </div> 
-                </div> 
-                <div id="box-content">
-                    <div id="content-about"> 
-                        <div class="about-image">
-                            <img src="./me_1-min.png"/>
-                        </div>
-                        <h1> Olle Andreasson </h1>
-                        <span class="highlight-word"> Creative Staff Engineer </span>
-                        <div class="separator"></div>
-                        <p> I am a Staff Engineer located in Gothenburg, Sweden with over 10 years of work experience backed by a CS degree. </p>
-                        <p> But I wouldn't really describe myself as such, because we're all so much more than our professional titles. To categorize is hard and we can go as far as we want down the rabbit hole of who we <span class="highlight-word">really</span> are as Alan Watts repeatedly asks us. </p>
-                        <p> When I applied to Gothenburg University in the spring of 2010 I was torn. Because at the same time I also applied for an acting school a bit outside the city. Two completely different paths in life, one creative path and one rational (in a dual sense). As you might understand, I chose the latter. </p>
-                        <p> Luckily, the route we take professionally has no real imprint on what we really are. That's why I call myself a Creative Engineer, and that's something I try to show with this website which I wrote during my parental leave in 2025 in native JavaScript. </p>
-                        <span class="highlight-word"> Oted Online </span>
-                        <div class="separator"></div>
-                        <p> The algorithm running in the canvas is similar to <span class="highlight-word"> Conway's Game of Life </span> with some personal adjustments. The architecture is event driven where one tile can call its neighbours limited by a declining strength of the color it contains. </p>
-                        <p> </p>
-                    </div>
+
+        <div id="box-content-container">
+
+          <div tab="about" class="box-content" id="content-about">
+            <div class="about-image">
+              <img src="./assets/me_1-min.png" alt="Portrait of Olle Andreasson" />
+            </div>
+            <h1>Olle Andreasson</h1>
+            <span class="highlight-word"> Creative Engineer </span>
+            <div class="separator"></div>
+
+            <p>I am currently employed as a Staff Engineer located in Gothenburg but working remotely. I have over 10 years of experience in startups, consulting and large enterprises across Scotland, Germany and Sweden.</p>
+
+            <p>When I applied to University of Gothenburg in the spring of 2010 I was torn, because at the same time I also applied for an acting school a bit outside the city. Two completely different paths in life, one creative path and one rational (in a dual sense). As you might understand, I chose the latter.</p>
+
+            <p>Luckily, the route we take professionally has no real imprint on what we really are. That's why I call myself a Creative Engineer, and that's something I try to show with this website which I wrote during my parental leave in 2025 in <span class="highlight-word">native JavaScript</span> (I am so over modern web development).</p>
+
+            <div class="separator"></div>
+            <span class="highlight-word">Oted Online</span>
+            <p>The algorithm running in the canvas is similar to <span class="highlight-word">Conway's Game of Life</span> with some personal adjustments. The architecture is event-driven where one tile can call its neighbours limited by a declining strength of the color it contains. It's mainly event-driven because I found the approach suitable to enable Tiles to talk to each other and its parent node. Check it out on <a class="link" href="https://github.com/Oted/otedonline" target="_blank" rel="noopener">GitHub!</a></p>
+
+            <div class="separator"></div>
+          </div>
+
+          <div tab="journey" class="no-show box-content" id="content-journey">
+              <h1>Journey</h1>
+              <span class="highlight-word"> A timeline of significance </span>
+              <div class="separator"></div>
+              <div id="timeline">
+                <div class="timeline-row">
+                  <div class="timeline-date">2021</div>
+                  <div class="timeline-line">
+                    <div class="timeline-dot"></div>
+                  </div>
+                  <div class="timeline-content">
+                    <h3> All roads lead home </h3>
+                    <p><span class="highlight-word"> Borta bra men hemma bäst </span> is a saying in Swedish and it sums up the descision to move back to Gothenburg. I wanted to be close to my family and maybe one day get one of my own, perhaps even a garden for Cashew and all my plants! </p>
+                    <p> Still working with GRID on a remote basis I took on the role as <span class="highlight-word"> Staff Engineer</span> which has widen my role significantly and I truly enjoy the challenges that it brings. </p> 
+                  </div>
                 </div>
-            </div>
-            <canvas id="canvas"></canvas>
-        </div>
-        <div id="foot">
-            <div id="foot-text">
-                <span> Olle Andreasson © 2026 </span>
-            </div>
-            <div id="foot-middle"></div>
-            <div class="foot-icon">
-                <a href="https://www.linkedin.com/in/olleandreasson/" target="_blank">
-                    <img class="icon" src="./linkedin.svg"/>
-                </a>
-            </div>
-            <div class="foot-icon">
-                <a href="https://github.com/Oted" target="_blank">
-                    <img class="icon" src="./github.svg"/>
-                </a>
-            </div>
-            <div class="foot-icon">
-                <a href="https://www.youtube.com/@Oteds" target="_blank">
-                    <img class="icon" src="./youtube.svg"/>
-                </a>
-            </div>
-             <div class="foot-icon">
-                <a href="https://x.com/herrolle" target="_blank">
-                    <img class="icon" src="./twitter.svg"/>
-                </a>
-            </div>
+
+                <div class="timeline-row">
+                  <div class="timeline-date">2016</div>
+                  <div class="timeline-line">
+                    <div class="timeline-dot"></div>
+                  </div>
+                  <div class="timeline-content">
+                    <h3> Liebe Berlin </h3>
+                    <p> I have so much love for the city of Berlin and the time I spent there and it is hard to decribe this nostalgic period. Berlin is a thriving place both in and out of tech and the people and the experiences I had here grew me into the man I am today. </p>
+                    <p> Soon after the move I switched to a new job in a larger company in the dating industry. I got to work with some very talented people and learned <span class="highlight-word"> GoLang </span> inside and out. We also dealt with a lot of purchased software which forced me to learn many other technilogies. </p>
+                    <p> After a few years I needed a break and took some time unemplyed before I focused my attention again on the start-up sector and found a job at <a href="https://grid.gg/" class="link">GRID Esports</a>. GRID is a perfect match for me not only because I get to work with my favorite game <span class="highlight-word"> Dota 2</span>, but also because the tech stack is super interesting, I especially enjoy real time data processing challenges using <span class="highlight-word"> Kafka</span>.</p>
+                    <div class="timeline-content-container"> 
+                      <p> I also got Cashew! She is the cutest, grumpiest and most adorable little thing ever created. Love you little rat <3 </p>
+                      <img class="timeline-image" src="./assets/cashew-orig_small-min.png" alt="Portrait of Cashew the cat" />
+                    </div>
+                  </div>
+                </div>
+
+                <div class="timeline-row">
+                  <div class="timeline-date">2014</div>
+                  <div class="timeline-line">
+                    <div class="timeline-dot"></div>
+                  </div>
+                  <div class="timeline-content">
+                    <h3> Hello Scotland! </h3>
+                    <p> After my degree I spread my applications wide across Europe with a focus on start-ups. I was very close of ending up in London, but a small fashion company contacted me from Edinburg and I got my first job as a <span class="highlight-word"> Backend Engineer </span> working mostly in NodeJS. I spent the following years in the beautiful city of Edinburg, working and making connections with many important people in my life. I also started a Meetup to play boardgames, it is still the <a href="https://www.meetup.com/edinburgh-gamers/" target="_blank" class="link">largest board game meetup in the city! </a> </p>
+                  </div>
+                </div>
  
+                <div class="timeline-row">
+                  <div class="timeline-date">2012</div>
+                  <div class="timeline-line">
+                    <div class="timeline-dot"></div>
+                  </div>
+                  <div class="timeline-content">
+                    <h3>Consultancy</h3>
+                    <p> My first experience within the tech industry was during the last years of my CS program and it was naturally an intense period with both school and work. It however put me at a great edge when I applied for work after, since most new grads has no work experience when applying for their first job. </p>
+                  </div>
+                </div>
+
+                <div class="timeline-row">
+                  <div class="timeline-date">2010</div>
+                  <div class="timeline-line">
+                    <div class="timeline-dot"></div>
+                  </div>
+                  <div class="timeline-content">
+                    <h3>University</h3>
+                    <p> I finally decided to do something more useful and applied late to the Computer Science program at the University of Gothenburg and got in! It's a good program with relevant but hard courses, I still remember the first we had was functional programming with Haskell and by the end of the semester the class had literally halved in size. This was an ongoing trend and only a handfull of students made it through the entire program. That I was one of them is something that makes me proud to this day. </p>
+                  </div>
+                </div>
+
+                <div class="timeline-row">
+                  <div class="timeline-date">2009</div>
+                  <div class="timeline-line">
+                    <div class="timeline-dot"></div>
+                  </div>
+                  <div class="timeline-content">
+                    <h3>Blunder years</h3>
+                    <p> The years prior to University I was living peak life according to my 20 year old self. I moved here and there in Europe and played <span class="highlight-word"> Musical Saw </span> in bars and for good money in the street. Youtube might or might not still have glimpses of this life. </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-   </body>
+      <canvas id="canvas"></canvas>
+    </div>
+
+    <div id="foot">
+      <div id="foot-text">
+        <span>Olle Andreasson © 2026</span>
+      </div>
+      <div id="foot-middle"></div>
+      <div class="foot-icon">
+        <a href="https://www.linkedin.com/in/olleandreasson/" target="_blank" rel="noopener">
+          <img class="icon" src="./assets/linkedin.svg" alt="LinkedIn" />
+        </a>
+      </div>
+      <div class="foot-icon">
+        <a href="https://github.com/Oted" target="_blank" rel="noopener">
+          <img class="icon" src="./assets/github.svg" alt="GitHub" />
+        </a>
+      </div>
+      <div class="foot-icon">
+        <a href="https://www.youtube.com/@Oteds" target="_blank" rel="noopener">
+          <img class="icon" src="./assets/youtube.svg" alt="YouTube" />
+        </a>
+      </div>
+      <div class="foot-icon">
+        <a href="https://x.com/herrolle" target="_blank" rel="noopener">
+          <img class="icon" src="./assets/twitter.svg" alt="Twitter/X" />
+        </a>
+      </div>
+    </div>
+  </body>
 </html>

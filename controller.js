@@ -1,17 +1,52 @@
-
 export class Controller {
     constructor(blocks, grid, eventBus) {
         this.hamburgerButton = document.getElementById("nav-burger");
+
+        this.aboutButton = document.getElementById("about-button")
+        this.journeyButton = document.getElementById("journey-button")
+        this.projectsButton = document.getElementById("projects-button")
+        this.contactButton = document.getElementById("contact-button")
+    
         this.box = document.getElementById("box");
+        this.boxContent = document.getElementById("box-content-container");
+        this.boxNav = document.getElementById("box-nav");
         this.showBox = false;
-        this.aboutButton = document.getElementById("")
 
         this.eventBus = eventBus;
         this.grid = grid;
         this.blocks = blocks;
 
+        this.allNavButtons = this.boxNav.querySelectorAll('[tab]');
+        this.allBoxContent = this.boxContent.querySelectorAll('[tab]');
+
+        this.aboutButton.addEventListener("click", this.boxTabButtonClick.bind(this));
+        this.contactButton.addEventListener("click", this.boxTabButtonClick.bind(this));
+        this.journeyButton.addEventListener("click", this.boxTabButtonClick.bind(this));
+        this.projectsButton.addEventListener("click", this.boxTabButtonClick.bind(this));
+
         this.hamburgerButton.addEventListener("click", () => {
-            this.hamburgerClick()
+            this.hamburgerClick();
+        });
+    }
+
+    boxTabButtonClick(e) {
+        const target = e.currentTarget.getAttribute("tab");
+        e.currentTarget.classList.add("active");
+
+        this.allNavButtons.forEach(el => {
+            if (el.getAttribute("tab") === target) {
+                el.classList.add("active");
+            } else {
+                el.classList.remove("active");
+            }
+        })
+
+        this.allBoxContent.forEach(el => {
+            if (el.getAttribute("tab") === target) {
+                el.classList.remove("no-show");
+            } else {
+                el.classList.add("no-show");
+            }
         })
     }
 
@@ -20,11 +55,10 @@ export class Controller {
         if (this.showBox) {
             this.box.className = "box"
             this.grid.init({colorStrength: 0.5, maxActiveColors: 10});
+            this.blocks.toggleButtonBlock();
         } else {
             this.box.className = "box hidden"
-            this.grid.init();
+            //this.grid.init();
         }
-
-        this.blocks.toggleButtonBlock();
     }
 }
