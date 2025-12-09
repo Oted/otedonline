@@ -1,6 +1,8 @@
 export class Controller {
     constructor(blocks, grid, eventBus) {
         this.hamburgerButton = document.getElementById("nav-burger");
+        this.closeButton = document.getElementById("close-box-icon");
+        this.openButton = document.getElementById("open-box-icon");
 
         this.aboutButton = document.getElementById("about-button")
         this.journeyButton = document.getElementById("journey-button")
@@ -24,7 +26,7 @@ export class Controller {
         this.journeyButton.addEventListener("click", this.boxTabButtonClick.bind(this));
         this.projectsButton.addEventListener("click", this.boxTabButtonClick.bind(this));
 
-        this.hamburgerButton.addEventListener("click", () => {
+        this.hamburgerButton.addEventListener("click", (e) => {
             this.hamburgerClick();
         });
     }
@@ -53,10 +55,14 @@ export class Controller {
     hamburgerClick() {
         this.showBox = !this.showBox;
         if (this.showBox) {
+            this.openButton.classList.add("no-show");
+            this.closeButton.classList.remove("no-show");
             this.box.className = "box"
             this.grid.init({colorStrength: 0.5, maxActiveColors: 10});
             this.blocks.toggleButtonBlock();
         } else {
+            this.openButton.classList.remove("no-show");
+            this.closeButton.classList.add("no-show");
             this.box.className = "box hidden"
             //this.grid.init();
         }

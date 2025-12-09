@@ -86,9 +86,20 @@ body {
     margin: 1rem auto;
 }
 
-.about-image {
-    width: 10rem;
+.row-left {
+    flex-direction: row-reverse;
+}
+
+.top-box-image {
     margin: auto;
+}
+
+.about-content-container {
+    margin-top: 1rem;
+    text-align: left;
+    display: flex;
+    gap:1rem;
+    align-items: center;
 }
 
 #box {
@@ -109,6 +120,12 @@ body {
 #box-nav {
     background-color: #191718;
     height: 6rem;
+}
+
+#close-box-button {
+    cursor: pointer;
+    flex: 0 0 auto;
+    width: 4rem;
 }
 
 .box-nav-button {
@@ -209,9 +226,8 @@ body {
     gap: 0.5rem;
 }
 
-.timeline-image {
-    width: 13rem;
-    max-width: 50%;
+.box-image {
+
 }
 
 .timeline-content-container {

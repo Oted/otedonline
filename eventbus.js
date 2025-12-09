@@ -1,7 +1,7 @@
 
 export class EventBus {
     constructor() {
-        this.tileCallSubscribers = {}; //map to reduce lookups
+        this.tileCallSubscribers = {}; //map with address to reduce lookup time
         this.dirtyTilesSubscribers = []; 
     }
 
