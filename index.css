@@ -47,7 +47,7 @@ body {
 }
 
 #box-content-container {
-    padding: 0 1rem;
+    padding: 0 0.5rem;
     overflow: auto;
     height: 100%;
     overscroll-behavior: contain;
@@ -211,6 +211,7 @@ body {
     width: 12rem;
     font-weight: 500;
     flex: 0 0 auto;
+    max-width: 40%;
 }
 
 .foot-icon {
