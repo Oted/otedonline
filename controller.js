@@ -4,10 +4,11 @@ export class Controller {
         this.closeButton = document.getElementById("close-box-icon");
         this.openButton = document.getElementById("open-box-icon");
 
-        this.aboutButton = document.getElementById("about-button")
-        this.journeyButton = document.getElementById("journey-button")
-        this.projectsButton = document.getElementById("projects-button")
-        this.contactButton = document.getElementById("contact-button")
+        this.aboutButton = document.getElementById("about-button");
+        this.journeyButton = document.getElementById("journey-button");
+        this.projectsButton = document.getElementById("projects-button");
+        this.contactButton = document.getElementById("contact-button");
+        this.contactTriggerButton = document.getElementById("contact-trigger");
     
         this.box = document.getElementById("box");
         this.boxContent = document.getElementById("box-content-container");
@@ -25,6 +26,10 @@ export class Controller {
         this.contactButton.addEventListener("click", this.boxTabButtonClick.bind(this));
         this.journeyButton.addEventListener("click", this.boxTabButtonClick.bind(this));
         this.projectsButton.addEventListener("click", this.boxTabButtonClick.bind(this));
+
+        this.contactTriggerButton.addEventListener("click", (e) => {
+            window.open("mailto:contact@oted.online");
+        });
 
         this.hamburgerButton.addEventListener("click", (e) => {
             this.hamburgerClick();

@@ -5,7 +5,7 @@ import {EventBus} from "./eventbus.js";
 
 class App {
     constructor() {
-        this.tickRateMs = 10;
+        this.tickRateMs = 15;
         this.ticks = 0;
 
         this.canvas = document.getElementById("canvas");

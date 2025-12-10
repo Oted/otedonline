@@ -61,6 +61,15 @@ body {
     margin: auto;
 }
 
+#contact-trigger {
+    cursor: pointer;
+    margin: auto;
+}
+
+#content-contact {
+    height: 100%;
+}
+
 #content-about {
     display: flex;
     flex-flow: column;
@@ -224,10 +233,6 @@ body {
     margin-top: 0.5rem;
     display: flex;
     gap: 0.5rem;
-}
-
-.box-image {
-
 }
 
 .timeline-content-container {
