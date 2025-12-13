@@ -1,8 +1,20 @@
 :root {
     --bg-color: rgb(53, 42, 58);
     --nav-color: rgb(238, 238, 245);
-    --color-red: #C03351;
     --color-blue: #51618E;
+    --color-red: #CA1B56;
+    --color-purpl: #6C3258;
+    --color-teal: #38626B;
+    --color-white: #EEEEF5;
+    --color-yellow: #FFE266;
+    --color-dark: #352A30;
+    --color-orange: #FE9A69;
+}
+
+@keyframes animate-image-box {
+    25% {box-shadow: var(--color-teal) 0px 5px 15px;}
+    50% {box-shadow: var(--color-purpl) 0px 5px 15px;}
+    75% {box-shadow: var(--color-dark) 0px 5px 15px;}
 }
 
 a {
@@ -100,7 +112,15 @@ body {
 }
 
 .top-box-image {
+    padding-top: 0.5rem;
     margin: auto;
+}
+
+.box-image {
+    border: 1px solid #352a308f;
+    animation: animate-image-box 15s infinite;
+    box-shadow: var(--color-blue) 0px 5px 15px;
+    border-radius: 50%;
 }
 
 .about-content-container {
@@ -112,7 +132,6 @@ body {
 }
 
 #box {
-    gap: 1rem;
     display: flex;
     flex-flow: column;
     transition: all 0.75s;
@@ -163,9 +182,11 @@ body {
 }
 
 #nav-home {
+    max-width: 60%;
+    letter-spacing: 2px;
     font-size: 1.25rem;
     font-style: italic;
-    width: 12rem;
+    width: 14rem;
     cursor: pointer;
     flex: 0 0 auto;
 }
@@ -281,4 +302,24 @@ body {
 
 .timeline-content h3 {
     margin: 0;
+}
+
+#projects {
+    justify-content: center;
+    gap: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.project-container {
+    text-align: center;
+    padding: 0.5rem;
+    width: 25rem;;
+}
+
+.project-info-container {
+    text-align: left;
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;;
 }
