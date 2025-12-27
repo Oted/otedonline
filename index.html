@@ -110,23 +110,15 @@
     <div role="main" id="container">
       <div class="hidden" id="box">
         <div class="nav" id="box-nav">
-          <div tab="about" id="about-button" class="box-nav-button active">
-            <span> about </span>
-          </div>
-          <div tab="journey" id="journey-button" class="box-nav-button">
-            <span> journey </span>
-          </div>
-          <div tab="projects" id="projects-button" class="box-nav-button">
-            <span> projects </span>
-          </div>
-          <div tab="contact" id="contact-button" class="box-nav-button">
-            <span> contact </span>
-          </div>
+          <button data-tab="about" id="about-button" class="box-nav-button active"> about </button>
+          <button data-tab="journey" id="journey-button" class="box-nav-button"> journey </button>
+          <button data-tab="projects" id="projects-button" class="box-nav-button"> projects </button>
+          <button data-tab="contact" id="contact-button" class="box-nav-button"> contact </button>
         </div>
 
         <div id="box-content-container">
 
-          <div tab="about" class="box-content" id="content-about">
+          <div data-tab="about" class="box-content" id="content-about">
             <div class="top-box-image portrait">
               <img class="box-image" width="250" height="250" src="./assets/me.png" alt="Portrait of Olle Andreasson" />
             </div>
@@ -134,14 +126,21 @@
             <span class="highlight-word"> Creative Engineer </span>
             <div class="separator"></div>
 
-            <p>Hello and welcome to my little corner of the internet, I am a software engineer, gamer, artist, plant lover, and much more, based in Gothenburg, Sweden. I have over 10 years of experience in startups, consulting and large enterprises across Scotland, Germany and Sweden.</p>
-            <p>When I applied to University of Gothenburg in the spring of 2010 I was torn, because at the same time I also applied for an acting school a bit outside the city. Two completely different paths in life, one creative path and one rational (in a dual sense). As you might understand, I chose the latter.</p>
-            <p>Luckily, the route we take professionally has no real imprint on what we really are. That's why I call myself a Creative Engineer, and that's something I try to show with this place which I wrote during my parental leave in 2025 in native JavaScript (consider that an opinion about modern web development if you want). </p>
+            <p>Hello and welcome to my little corner of the internet, I am a software engineer, gamer, artist, plant lover and much more, based in Gothenburg, Sweden. I have over 10 years of experience in startups, consulting and large enterprises across Scotland, Germany and Sweden.</p>
+            <p>When I applied for the computer science program at the University of Gothenburg in spring of 2010 I was torn, because at the same time I also applied for an acting school a bit outside the city. Two completely different paths in life, one creative path and one rational (in a dual sense). As you might understand, I chose the latter.</p>
+            <p>Luckily, the route we take professionally has no real imprint on what we really are. That's why I call myself a Creative Engineer, and that's something I try to show with this website which I wrote during my parental leave in 2025 in native JavaScript (consider that a personal opinion about modern web development). </p>
 
             <div class="separator"></div>
             <span class="highlight-word">Oted Online</span>
-            <p>The algorithm running in the canvas is similar to <span class="highlight-word">Conway's Game of Life</span> with some personal adjustments. The architecture is event-driven where one tile can call its neighbours limited by a declining strength of the color it contains. It's mainly event-driven because I found the approach suitable to enable tiles to talk to each other. Check it out on <a class="link" href="https://github.com/Oted/otedonline" target="_blank" rel="noopener">GitHub!</a></p>
-            <p> <span class="highlight-word"> Disclaimer: </span> This website was made entirely without AI! Did you know that in May 2025 the amount of content created on the internet by AI <a class="link" target="_blank" rel="noopener" href="https://graphite.io/five-percent/more-articles-are-now-created-by-ai-than-humans">surpassed</a> content made by <span class="highlight-word">us</span>. When an ever increasing amount of what we consume online is just a generic sum over all created in the past, what does it do to the internet and what we consume? When the data fed to the models is also increasingly made by AI? Where does <span class="highlight-word">poetry</span> live then? </p>
+            <p>My online alias started as Detox in the game World of Warcraft around 2005. I later thought it was too cringe and reversed the word it into Xoted, where the X went in the end I cant fully remember but since then it has been Oted and this website is thus <span class="highlight-word"> me online! </span>. It serves as a semi professional portfolio but is also a host for private purposes such as selfhosting, personal server playground and a rather sophisticated media management cloud <span class="highlight-word">Arr!</span> </p>
+            <p>The algorithm running in the canvas is similar to <span class="highlight-word">Conway's Game of Life</span> with some personal adjustments. The architecture is event-driven where one tile can trigger its neighbours limited by a declining strength of the color it contains. Check it out on <a class="link" href="https://github.com/Oted/otedonline" target="_blank" rel="noopener">GitHub!</a></p>
+            <p><span class="highlight-word"> Disclaimer: </span> oted.online is made entirely without AI! Did you know that in May 2025 the amount of content created on the internet by AI <a class="link" target="_blank" rel="noopener" href="https://graphite.io/five-percent/more-articles-are-now-created-by-ai-than-humans">surpassed</a> content made by us. When an ever increasing amount of what we consume online is just a generic sum over all created in the past, what does it do to the internet and what we consume? When the data fed to the models is also increasingly made by AI? Where does <span class="highlight-word">poetry</span> live then? </p>
+
+            <div class="separator"></div>
+            <span class="highlight-word">Moar than code</span>
+            <p>I have always been a hobby musician and have over the years played several instruments, perhaps the most noteworthy being the <span class="highlight-word"> Musical Saw</span>, which I started playing in my early teens. Until I put up something more recent up, check out <a href="https://www.youtube.com/watch?v=WiIlvfZYBoE" class="link" target="_blank" rel="noopener"> A bright horizon</a> made many years ago.</p>
+            <p>I love plants! To every spring start anew and with the returning sun see the seeds grow to life is something that brings be great joy. Chillies are a favorite since I have so little space (balcony approx 5m2) and in the autumn I normally bring them inside and turn them into bonshies! </p>
+            <p>Zen has been with me (on and off) from early teens and has done more than anything for my well being and shaping who I am. I am forever grateful for Pake Hall at Gothenburg Zen Center, Kalle at Glasgow Cloud Water Zen Centre and Patrick Ehinger at Zen im leben in Berlin. Without you I would have never kept it up, gassho! </p>
 
             <div class="separator"></div>
             <span class="highlight-word"> Inspirations </span>
@@ -168,7 +167,7 @@
             </div>
          </div>
 
-          <div tab="journey" class="no-show box-content" id="content-journey">
+          <div data-tab="journey" class="no-show box-content" id="content-journey">
               <h2>Journey</h2>
               <span class="highlight-word"> A timeline of significance </span>
               <div class="separator"></div>
@@ -262,7 +261,7 @@
               </div>
             </div>
 
-            <div tab="projects" class="no-show box-content" id="content-projects">
+            <div data-tab="projects" class="no-show box-content" id="content-projects">
               <h2>Projects</h2>
               <span> Over the years I have completed several projects that I'm proud of. Some of them had thousands of users and most of them fell into the void due to lack of time and maintenance from my part. </span>
               <div id="projects">
@@ -272,7 +271,7 @@
                   <div class="project-info-container">
                     <img width="300" height="212" src="assets/oted-online.png" />
                   </div>
-                  <span> This website is my latest project written in native JavaScript. The algorithm running in the canvas was really fun to implement. </span>
+                  <span> This website is my latest project and serves as a semi professional portfolio but also a personal hub for content and media managments. The algorithm running in the canvas was especially fun to implement where I could challenge myself with both optimizing the canvas drawing and write in native Javascript without bloated frameworks. </span>
                 </div>
  
                 <div class="project-container"> 
@@ -280,7 +279,7 @@
                   <div class="project-info-container">
                     <img width="300" height="212" src="assets/what-to-watch.png" />
                   </div>
-                  <span> This webapp collected new movies and TV Shows and displayed them in a webapp and had thousands of users while it was live! It also sent emails every Friday with recommendations to users. </span>
+                  <span> This webapp collected new movies and TV Shows and allowed users to easily filter and sort based of preferences! It also sent emails every Friday with recommendations to users, unfortionally the database with all of the emails was lost, I abandoned the projects due to lack of time when my son was born. </span>
                 </div>
 
                 <div class="project-container"> 
@@ -288,7 +287,7 @@
                   <div class="project-info-container">
                     <img width="300" height="212" src="assets/get-some-internet.png" />
                   </div>
-                  <span> GSI was a pet project of mine mostly during the years in Scotland. A great entertainment website with a rather early adoption of infinite scroll of recent popular videos, gifs and images. </span>
+                  <span> GSI was a pet project of mine mostly during the years in Scotland. It was a great entertainment website with a rather early adoption of infinite scroll of recent popular videos, gifs and images. </span>
                 </div>
 
                 <div class="project-container"> 
@@ -296,7 +295,7 @@
                   <div class="project-info-container">
                     <img width="300" height="212" src="assets/mandelbrot-calc.png" />
                   </div>
-                  <span> A small project I did to both learn more about both the Mandelbrot set and Rust, <a href="https://mandelbrot.oted.online/" target="_blank" rel="noopener" class="link"> try it out! </a>. Perhaps one day I should improve the canvas display since it's a bit grainy on deeper zooms. </span>
+                  <span> A small project I did to both learn more about both the Mandelbrot set and Rust, but also to visually understand what happens with the set as Z changes. Perhaps one day I should improve the canvas display since it's a bit grainy on deeper zooms. </span>
                 </div>
 
                 <div class="project-container"> 
@@ -304,7 +303,7 @@
                   <div class="project-info-container">
                     <img width="300" height="212" src="assets/youdify.png" />
                   </div>
-                  <span> This project was a collaborative YouTube playlist website, people could join the same "room" and queue videos over websockets at parties and gatherings. It was never marketed and thus only used by me and my friends. Still a great product and a great learning experience. </span>
+                  <span> This project was a collaborative YouTube playlist, people could join the same "room" and queue videos over websockets at parties and gatherings. It was never marketed and thus only used by me and my friends. Still a great product and a great learning experience. </span>
                 </div>
 
                 <div class="project-container"> 
@@ -316,7 +315,7 @@
                 </div>
               </div>
             </div>
-            <div tab="contact" class="no-show box-content" id="content-contact">
+            <div data-tab="contact" class="no-show box-content" id="content-contact">
               <div id="contact-trigger" class="icon">
                 <h2 class="highlight-word"> contact@oted.online </h2>
               </div>

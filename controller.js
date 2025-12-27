@@ -19,8 +19,8 @@ export class Controller {
         this.grid = grid;
         this.blocks = blocks;
 
-        this.allNavButtons = this.boxNav.querySelectorAll('[tab]');
-        this.allBoxContent = this.boxContent.querySelectorAll('[tab]');
+        this.allNavButtons = this.boxNav.querySelectorAll('[data-tab]');
+        this.allBoxContent = this.boxContent.querySelectorAll('[data-tab]');
 
         this.aboutButton.addEventListener("click", this.boxTabButtonClick.bind(this));
         this.contactButton.addEventListener("click", this.boxTabButtonClick.bind(this));
@@ -37,11 +37,11 @@ export class Controller {
     }
 
     boxTabButtonClick(e) {
-        const target = e.currentTarget.getAttribute("tab");
+        const target = e.currentTarget.getAttribute("data-tab");
         e.currentTarget.classList.add("active");
 
         this.allNavButtons.forEach(el => {
-            if (el.getAttribute("tab") === target) {
+            if (el.getAttribute("data-tab") === target) {
                 el.classList.add("active");
             } else {
                 el.classList.remove("active");
@@ -49,7 +49,7 @@ export class Controller {
         })
 
         this.allBoxContent.forEach(el => {
-            if (el.getAttribute("tab") === target) {
+            if (el.getAttribute("data-tab") === target) {
                 el.classList.remove("no-show");
             } else {
                 el.classList.add("no-show");

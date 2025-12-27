@@ -17,6 +17,27 @@
     75% {box-shadow: var(--color-dark) 0px 5px 15px;}
 }
 
+button {
+    all: unset;
+  }
+  
+  button:focus {
+    outline: revert;
+  }
+
+.asd {
+    display: flex;
+    gap: 1rem;
+}
+
+.dsa {
+    gap: 1rem;
+    max-width: 12rem;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
 a {
     all: unset;
 }
@@ -149,12 +170,6 @@ body {
 #box-nav {
     background-color: #191718;
     height: 6rem;
-}
-
-#close-box-button {
-    cursor: pointer;
-    flex: 0 0 auto;
-    width: 4rem;
 }
 
 .box-nav-button {
